@@ -49,11 +49,25 @@ Optional — only if you enable the `/admin` dashboard:
    `wss://<your-app>.onrender.com/api/voice`. Confirm a booking and check that a row
    lands in the `Daily Reservation Log` sheet and a tentative hold appears on the calendar.
 
+## 4a. Keep the free instance awake (recommended)
+`render.yaml` uses **`plan: free`** ($0). Render **sleeps a free service after 15 min of
+inactivity**, so the first visitor after a quiet spell waits ~30–50s for a cold start and
+any idle WebSocket drops. For a voice demo that's rough — prevent it with a free uptime
+pinger:
+
+1. Sign up at [UptimeRobot](https://uptimerobot.com) (or [cron-job.org](https://cron-job.org)).
+2. Add a new **HTTP(s)** monitor → URL `https://<your-app>.onrender.com/` → interval **10 minutes**.
+3. Save. The periodic hit keeps the service warm.
+
+A single always-on free service uses ~730 instance-hours/month, just under Render's ~750-hr
+free allowance, so this stays free. If the app ever gets real traffic and you want zero cold
+starts guaranteed, flip `plan: free` → `plan: starter` in `render.yaml` (one line, ~$7/mo).
+
 ## 5. Things to know
 - **Single instance only.** The WebSocket and the in-memory `sessionCache` live in
   one process, so do **not** scale to >1 instance (sessions won't be shared).
-- **Free tier sleeps on idle** → ~30–50s cold start on the first hit, and any active
-  WS drops when it sleeps. Use the **Starter** plan to stay warm for real use.
+- **Free tier sleeps on idle** unless kept warm (see §4a) → cold start on the first hit,
+  and any active WS drops when it sleeps.
 - **`next start` binds to `$PORT`** automatically (Render sets it) — no change needed.
 - **Admin login (`/admin`)** needs `AUTH_SECRET` + `AUTH_TRUST_HOST=true`, and the Google
   OAuth redirect URI `https://<your-app>.onrender.com/api/auth/callback/google` added in
