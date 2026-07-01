@@ -1,0 +1,44 @@
+# Render Blueprint — deploys the full Next.js voice agent (pages + REST + WebSocket)
+# as a single persistent Web Service. The voice pipeline needs a long-lived Node
+# process for the WebSocket, which is why the whole app runs here (not on Vercel).
+#
+# To use: push this file, then in Render → New → Blueprint → pick this repo.
+# Set the secret env vars (sync:false below) in the dashboard after first deploy.
+services:
+  - type: web
+    name: aether-dining-voice-agent
+    runtime: node
+    plan: starter            # free tier cold-starts on idle; "starter" ($7/mo) stays warm
+    region: singapore        # closest to Sarvam/India users; change if you prefer
+    buildCommand: npm ci && npm run build
+    startCommand: npm run start   # next start binds to $PORT automatically
+    healthCheckPath: /
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_ENV
+        value: production
+      # ---- Voice pipeline (required) ----
+      - key: GROQ_API_KEY
+        sync: false
+      - key: SARVAM_API_KEY
+        sync: false
+      - key: GOOGLE_API_KEY          # Gemini dialogue
+        sync: false
+      # ---- Persistence (required) ----
+      - key: GOOGLE_SERVICE_ACCOUNT_JSON   # base64 of the full service-account key
+        sync: false
+      - key: GOOGLE_SHEETS_ID
+        sync: false
+      - key: GOOGLE_CALENDAR_ID
+        sync: false
+      # ---- Admin auth (optional — only if you enable /admin) ----
+      - key: AUTH_SECRET             # NextAuth v5 session secret (openssl rand -base64 32)
+        sync: false
+      - key: AUTH_TRUST_HOST         # required on non-Vercel hosts
+        value: "true"
+      - key: GOOGLE_CLIENT_ID        # Google OAuth for admin login (still placeholder)
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
