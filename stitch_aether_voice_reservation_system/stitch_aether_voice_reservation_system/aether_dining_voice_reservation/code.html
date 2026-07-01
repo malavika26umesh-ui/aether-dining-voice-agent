@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AETHER | Immersive Reservation</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Playfair+Display:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed-dim": "#e9c349",
+                    "surface-variant": "#38342b",
+                    "danger": "#FF3B30",
+                    "on-primary-fixed": "#241a00",
+                    "inverse-primary": "#735c00",
+                    "secondary-container": "#4a4949",
+                    "on-tertiary-container": "#454543",
+                    "outline-variant": "#4d4635",
+                    "primary-container": "#d4af37",
+                    "error-container": "#93000a",
+                    "secondary-fixed": "#e5e2e1",
+                    "on-primary": "#3c2f00",
+                    "inverse-on-surface": "#343027",
+                    "surface-container-lowest": "#110e07",
+                    "on-tertiary-fixed": "#1b1c1a",
+                    "surface-tint": "#e9c349",
+                    "primary": "#f2ca50",
+                    "on-primary-fixed-variant": "#574500",
+                    "on-surface-variant": "#d0c5af",
+                    "surface-container": "#231f17",
+                    "charcoal": "#1A1A1A",
+                    "error": "#ffb4ab",
+                    "on-surface": "#eae1d4",
+                    "on-primary-container": "#554300",
+                    "tertiary": "#d0cecb",
+                    "primary-fixed": "#ffe088",
+                    "on-secondary": "#313030",
+                    "on-error-container": "#ffdad6",
+                    "obsidian": "#121212",
+                    "success": "#34C759",
+                    "inverse-surface": "#eae1d4",
+                    "tertiary-fixed-dim": "#c8c6c3",
+                    "secondary": "#c8c6c5",
+                    "soft-ivory": "#FDFBF7",
+                    "warm-amber": "#E5A93B",
+                    "on-secondary-fixed": "#1c1b1b",
+                    "tertiary-fixed": "#e4e2de",
+                    "surface": "#16130b",
+                    "secondary-fixed-dim": "#c8c6c5",
+                    "warning": "#FF9500",
+                    "brushed-gold": "#D4AF37",
+                    "surface-container-high": "#2d2a21",
+                    "on-tertiary-fixed-variant": "#474744",
+                    "outline": "#99907c",
+                    "background": "#16130b",
+                    "surface-dim": "#16130b",
+                    "on-secondary-fixed-variant": "#474646",
+                    "tertiary-container": "#b4b3af",
+                    "surface-bright": "#3d392f",
+                    "on-error": "#690005",
+                    "surface-container-highest": "#38342b",
+                    "on-background": "#eae1d4",
+                    "on-secondary-container": "#bab8b7",
+                    "surface-container-low": "#1f1b13",
+                    "on-tertiary": "#30312e"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "gutter": "24px",
+                    "container-max": "1280px",
+                    "unit": "4px",
+                    "section-gap": "120px",
+                    "margin-desktop": "64px"
+            },
+            "fontFamily": {
+                    "body-sm": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "headline-lg": ["Playfair Display"],
+                    "body-md": ["Inter"],
+                    "headline-xl": ["Playfair Display"],
+                    "label-lg": ["Inter"],
+                    "display-lg": ["Playfair Display"],
+                    "body-lg": ["Inter"],
+                    "display-lg-mobile": ["Playfair Display"],
+                    "headline-md": ["Playfair Display"]
+            },
+            "fontSize": {
+                    "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-xl": ["48px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "label-lg": ["14px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "display-lg-mobile": ["40px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        @keyframes morph {
+            0% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; transform: scale(1); }
+            50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; transform: scale(1.1); }
+            100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; transform: scale(1); }
+        }
+
+        .morphing-orb {
+            animation: morph 8s ease-in-out infinite;
+            background: linear-gradient(135deg, #f2ca50 0%, #D4AF37 50%, #E5A93B 100%);
+            box-shadow: 0 0 80px rgba(212, 175, 55, 0.4);
+            filter: blur(1px);
+        }
+
+        .glass-panel {
+            background: rgba(26, 26, 26, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .pulse-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 50%;
+            animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            100% { transform: scale(1.8); opacity: 0; }
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-obsidian text-on-surface overflow-hidden h-screen font-body-md text-body-md">
+<main class="flex h-full w-full">
+<!-- Left Panel: Voice Interface (2/3) -->
+<section class="w-full md:w-2/3 h-full relative flex flex-col items-center justify-between p-margin-desktop bg-surface-container-lowest">
+<!-- Header Controls -->
+<div class="w-full flex justify-between items-center z-10">
+<a class="flex items-center gap-2 group transition-all" href="#">
+<span class="material-symbols-outlined text-primary group-hover:-translate-x-1 transition-transform">arrow_back</span>
+<span class="font-label-lg text-label-lg text-primary tracking-widest">EXIT EXPERIENCE</span>
+</a>
+<div class="flex items-center gap-gutter">
+<button class="p-3 rounded-full border border-primary/20 hover:bg-primary/10 transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">keyboard_alt</span>
+</button>
+<button class="p-3 rounded-full border border-primary/20 hover:bg-primary/10 transition-colors flex items-center justify-center" id="muteBtn">
+<span class="material-symbols-outlined text-primary">mic</span>
+</button>
+</div>
+</div>
+<!-- Central Content: Morphing Orb -->
+<div class="flex flex-col items-center gap-12 flex-1 justify-center z-0 relative w-full">
+<!-- Decorative background radial -->
+<div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.1),transparent_70%)] pointer-events-none"></div>
+<div class="relative w-64 h-64 md:w-80 md:h-80">
+<div class="pulse-ring" style="animation-delay: 0s"></div>
+<div class="pulse-ring" style="animation-delay: 1s"></div>
+<div class="morphing-orb w-full h-full"></div>
+</div>
+<div class="text-center space-y-6 max-w-xl">
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface leading-tight">
+                        Where would you like to sit? Standard, Outdoor, or Bar?
+                    </h1>
+</div>
+</div>
+<!-- Chat Transcript bubbles -->
+<div class="w-full max-w-2xl space-y-gutter pb-8 z-10">
+<div class="flex flex-col gap-4">
+<!-- Agent Bubble -->
+<div class="self-start max-w-[85%] bg-charcoal p-5 rounded-xl rounded-bl-none shadow-lg border border-white/5">
+<p class="font-body-md text-body-md text-on-surface">We have availability for your party of two on June 14th at 7:00 PM. Our terrace offers a stunning view of the city skyline tonight.</p>
+</div>
+<!-- User Bubble -->
+<div class="self-end max-w-[85%] border border-primary/40 bg-primary/5 p-5 rounded-xl rounded-br-none">
+<p class="font-body-md text-body-md text-primary">That sounds wonderful. Tell me more about the seating options.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Panel: Hold Summary (1/3) -->
+<aside class="hidden md:flex md:w-1/3 h-full bg-surface-container-low border-l border-primary/20 p-margin-desktop flex-col justify-center">
+<div class="glass-panel p-10 rounded-xl space-y-8 shadow-[0px_10px_30px_rgba(212,175,55,0.05)] relative overflow-hidden">
+<!-- Subtle gold highlight in corner -->
+<div class="absolute top-0 right-0 w-24 h-24 bg-primary/10 blur-3xl rounded-full -mr-12 -mt-12"></div>
+<header class="space-y-2">
+<p class="font-label-lg text-label-lg text-primary tracking-[0.2em]">RESERVATION SUMMARY</p>
+<h2 class="font-headline-xl text-headline-xl text-on-surface">Confirming Details</h2>
+</header>
+<div class="space-y-6">
+<div class="border-b border-primary/10 pb-4">
+<label class="font-label-sm text-label-sm text-on-surface-variant block mb-1">OCCASION</label>
+<p class="font-headline-md text-headline-md text-on-surface">Anniversary / Special Occasion</p>
+</div>
+<div class="grid grid-cols-2 gap-gutter">
+<div class="border-b border-primary/10 pb-4">
+<label class="font-label-sm text-label-sm text-on-surface-variant block mb-1">DATE</label>
+<p class="font-body-lg text-body-lg text-on-surface font-semibold">June 14, 2026</p>
+</div>
+<div class="border-b border-primary/10 pb-4">
+<label class="font-label-sm text-label-sm text-on-surface-variant block mb-1">TIME</label>
+<p class="font-body-lg text-body-lg text-on-surface font-semibold">7:00 PM IST</p>
+</div>
+</div>
+<div class="bg-primary/5 border border-primary/20 p-4 rounded-lg flex items-center justify-between">
+<div>
+<label class="font-label-sm text-label-sm text-primary block mb-1">STATUS</label>
+<p class="font-body-md text-body-md text-on-surface font-bold">Tentative Hold</p>
+</div>
+<div class="text-right">
+<span class="font-label-lg text-label-lg text-primary" id="timer">14:59</span>
+</div>
+</div>
+</div>
+<div class="pt-8 space-y-6">
+<button class="w-full bg-gradient-to-r from-brushed-gold to-warm-amber text-obsidian font-bold py-4 rounded-lg hover:shadow-[0px_0px_20px_rgba(212,175,55,0.4)] transition-all active:scale-[0.98]">
+                        CONFIRM TABLE
+                    </button>
+<p class="font-body-sm text-body-sm text-on-surface-variant text-center opacity-60">
+                        By proceeding, you agree to AETHER's luxury service terms. Your data is encrypted and handled with the utmost discretion.
+                    </p>
+</div>
+</div>
+<!-- Branding Logo at bottom right -->
+<div class="mt-auto pt-12 flex justify-end">
+<span class="font-display-lg text-headline-md text-primary tracking-[0.4em] opacity-30">AETHER</span>
+</div>
+</aside>
+</main>
+<!-- Overlay UI Elements -->
+<div class="fixed bottom-0 left-0 w-full md:w-2/3 p-margin-desktop flex justify-center pointer-events-none">
+<div class="bg-charcoal/80 backdrop-blur-md px-6 py-2 rounded-full border border-primary/10 flex items-center gap-4 text-primary animate-pulse">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="font-label-sm text-label-sm tracking-widest">LISTENING...</span>
+</div>
+</div>
+<script>
+        // Simple micro-interactions
+        const muteBtn = document.getElementById('muteBtn');
+        let isMuted = false;
+
+        muteBtn.addEventListener('click', () => {
+            isMuted = !isMuted;
+            const icon = muteBtn.querySelector('.material-symbols-outlined');
+            icon.textContent = isMuted ? 'mic_off' : 'mic';
+            muteBtn.classList.toggle('bg-error/10', isMuted);
+            muteBtn.classList.toggle('border-error/50', isMuted);
+            icon.classList.toggle('text-error', isMuted);
+        });
+
+        // Countdown Timer Logic
+        let timeLeft = 15 * 60;
+        const timerElement = document.getElementById('timer');
+
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerElement.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            if (timeLeft > 0) {
+                timeLeft--;
+            }
+        }
+
+        setInterval(updateTimer, 1000);
+
+        // Simulated Interaction Logic for the Orb
+        document.addEventListener('mousemove', (e) => {
+            const orb = document.querySelector('.morphing-orb');
+            const rect = orb.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
+            const deltaX = (e.clientX - centerX) / 30;
+            const deltaY = (e.clientY - centerY) / 30;
+            
+            orb.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+        });
+    </script>
+</body></html>

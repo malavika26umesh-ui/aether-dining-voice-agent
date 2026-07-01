@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TableVoice — Architecture Diagram</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0f0f0f;
+    color: #eae1d4;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    padding: 40px 24px;
+  }
+  h1 {
+    font-family: 'Georgia', serif;
+    font-size: 28px;
+    color: #D4AF37;
+    letter-spacing: 0.08em;
+    text-align: center;
+    margin-bottom: 6px;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 13px;
+    color: #999;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 48px;
+  }
+
+  /* ── Layout ── */
+  .diagram {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* ── Swimlane labels ── */
+  .lane-wrapper {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 0;
+  }
+  .lane-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #666;
+    border-right: 1px solid #2a2a2a;
+    padding: 20px 0;
+  }
+  .lane-label.gold { color: #D4AF37; border-color: rgba(212,175,55,0.3); }
+
+  /* ── Rows ── */
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    border-bottom: 1px solid #1a1a1a;
+  }
+  .row:last-child { border-bottom: none; }
+
+  /* ── Boxes ── */
+  .box {
+    border: 1px solid #333;
+    border-radius: 4px;
+    padding: 10px 14px;
+    font-size: 12px;
+    line-height: 1.4;
+    min-width: 130px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .box .name { font-weight: 700; font-size: 13px; margin-bottom: 3px; }
+  .box .provider { font-size: 10px; color: #888; letter-spacing: 0.05em; }
+  .box .detail { font-size: 10px; color: #aaa; margin-top: 3px; }
+
+  /* Box colours */
+  .box-browser  { background: #1a1a2e; border-color: #4a4a8a; }
+  .box-browser .name  { color: #8888dd; }
+  .box-next     { background: #0d1117; border-color: #3a3a3a; }
+  .box-next .name     { color: #ddd; }
+  .box-gemini   { background: #0d1f0d; border-color: #2d5a2d; }
+  .box-gemini .name   { color: #5cb85c; }
+  .box-sarvam   { background: #1a0d0d; border-color: #5a2d2d; }
+  .box-sarvam .name   { color: #e07070; }
+  .box-google   { background: #1a1200; border-color: #5a4700; }
+  .box-google .name   { color: #D4AF37; }
+  .box-auth     { background: #120d1a; border-color: #4a2d6a; }
+  .box-auth .name     { color: #aa70dd; }
+  .box-file     { background: #0d1a1a; border-color: #2d5a5a; }
+  .box-file .name     { color: #70cccc; }
+
+  /* ── Arrows ── */
+  .arrow {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .arrow-line {
+    height: 1px;
+    width: 32px;
+    background: #444;
+  }
+  .arrow-label {
+    font-size: 9px;
+    color: #666;
+    letter-spacing: 0.05em;
+    text-align: center;
+    max-width: 80px;
+    line-height: 1.2;
+  }
+  .arrow-head { color: #555; font-size: 14px; }
+  .arrow.gold .arrow-line { background: rgba(212,175,55,0.5); }
+  .arrow.gold .arrow-label { color: #D4AF37; }
+  .arrow.gold .arrow-head { color: #D4AF37; }
+  .arrow.blue .arrow-line { background: rgba(100,150,255,0.5); }
+  .arrow.blue .arrow-label { color: #80aaff; }
+  .arrow.blue .arrow-head { color: #80aaff; }
+  .arrow.red .arrow-line { background: rgba(220,80,80,0.5); }
+  .arrow.red .arrow-label { color: #dd8888; }
+  .arrow.red .arrow-head { color: #dd8888; }
+  .arrow.green .arrow-line { background: rgba(80,180,80,0.5); }
+  .arrow.green .arrow-label { color: #88cc88; }
+  .arrow.green .arrow-head { color: #88cc88; }
+
+  /* ── Flow arrow vertical ── */
+  .vflow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 0;
+    gap: 6px;
+    color: #555;
+    font-size: 11px;
+  }
+
+  /* ── Legend ── */
+  .legend {
+    max-width: 1200px;
+    margin: 40px auto 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 28px;
+    padding: 20px;
+    border: 1px solid #222;
+    border-radius: 4px;
+  }
+  .legend-title {
+    width: 100%;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #555;
+    margin-bottom: 4px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: #aaa;
+  }
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  /* ── Full flow SVG ── */
+  .svg-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    overflow-x: auto;
+  }
+  svg text { font-family: 'Inter', 'Segoe UI', sans-serif; }
+
+  /* ── Data flow section ── */
+  .section-title {
+    max-width: 1200px;
+    margin: 40px auto 16px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #555;
+    border-bottom: 1px solid #222;
+    padding-bottom: 8px;
+  }
+
+  /* ── Flow steps ── */
+  .flow-steps {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1px;
+    background: #1a1a1a;
+    border: 1px solid #222;
+  }
+  .step {
+    background: #111;
+    padding: 16px;
+    position: relative;
+  }
+  .step-num {
+    font-size: 32px;
+    font-weight: 900;
+    color: #1e1e1e;
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    line-height: 1;
+    font-family: Georgia, serif;
+  }
+  .step-title { font-size: 11px; font-weight: 700; color: #D4AF37; margin-bottom: 4px; letter-spacing: 0.05em; }
+  .step-body { font-size: 11px; color: #888; line-height: 1.5; }
+  .step-provider { font-size: 10px; color: #555; margin-top: 6px; font-style: italic; }
+</style>
+</head>
+<body>
+
+<h1>AETHER DINING · TABLEVOICE</h1>
+<div class="subtitle">End-to-End Architecture — June 2026</div>
+
+<!-- ════════════════════════════════════════════════════════
+     MAIN ARCHITECTURE SVG
+════════════════════════════════════════════════════════ -->
+<div class="svg-wrap">
+<svg width="1160" height="820" viewBox="0 0 1160 820" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#555"/>
+    </marker>
+    <marker id="arr-gold" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#D4AF37"/>
+    </marker>
+    <marker id="arr-blue" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6699ff"/>
+    </marker>
+    <marker id="arr-green" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#66cc66"/>
+    </marker>
+    <marker id="arr-red" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#cc6666"/>
+    </marker>
+  </defs>
+
+  <!-- Background regions -->
+  <rect x="0" y="0" width="1160" height="820" fill="#0f0f0f"/>
+  <!-- Browser swimlane -->
+  <rect x="0" y="30" width="1160" height="160" fill="#111520" rx="0"/>
+  <text x="10" y="118" font-size="10" fill="#334" font-weight="700" letter-spacing="3" transform="rotate(-90,10,118)">BROWSER</text>
+  <!-- Next.js swimlane -->
+  <rect x="0" y="200" width="1160" height="200" fill="#111211" rx="0"/>
+  <text x="10" y="312" font-size="10" fill="#243" font-weight="700" letter-spacing="3" transform="rotate(-90,10,312)">NEXT.JS SERVER</text>
+  <!-- AI providers swimlane -->
+  <rect x="0" y="410" width="1160" height="180" fill="#12110d" rx="0"/>
+  <text x="10" y="510" font-size="10" fill="#443" font-weight="700" letter-spacing="3" transform="rotate(-90,10,510)">AI PROVIDERS</text>
+  <!-- Storage swimlane -->
+  <rect x="0" y="600" width="1160" height="180" fill="#0d1111" rx="0"/>
+  <text x="10" y="698" font-size="10" fill="#244" font-weight="700" letter-spacing="3" transform="rotate(-90,10,698)">STORAGE / AUTH</text>
+
+  <!-- Swimlane borders -->
+  <line x1="28" y1="30" x2="28" y2="790" stroke="#1e1e1e" stroke-width="1"/>
+  <line x1="0" y1="30" x2="1160" y2="30" stroke="#1e1e1e"/>
+  <line x1="0" y1="200" x2="1160" y2="200" stroke="#1e1e1e"/>
+  <line x1="0" y1="410" x2="1160" y2="410" stroke="#1e1e1e"/>
+  <line x1="0" y1="600" x2="1160" y2="600" stroke="#1e1e1e"/>
+  <line x1="0" y1="790" x2="1160" y2="790" stroke="#1e1e1e"/>
+
+  <!-- ── BROWSER LAYER ── -->
+
+  <!-- Landing Page Widget -->
+  <rect x="50" y="50" width="140" height="60" fill="#151525" stroke="#4a4a8a" stroke-width="1" rx="3"/>
+  <text x="120" y="73" font-size="11" fill="#8888dd" text-anchor="middle" font-weight="700">Landing Page</text>
+  <text x="120" y="87" font-size="9" fill="#666" text-anchor="middle">VoiceWidget.tsx</text>
+  <text x="120" y="100" font-size="9" fill="#555" text-anchor="middle">FAB + chat panel</text>
+
+  <!-- /reserve Page -->
+  <rect x="230" y="50" width="140" height="60" fill="#151525" stroke="#4a4a8a" stroke-width="1" rx="3"/>
+  <text x="300" y="73" font-size="11" fill="#8888dd" text-anchor="middle" font-weight="700">Reservation Page</text>
+  <text x="300" y="87" font-size="9" fill="#666" text-anchor="middle">/reserve page.tsx</text>
+  <text x="300" y="100" font-size="9" fill="#555" text-anchor="middle">Full-screen voice UI</text>
+
+  <!-- useVoiceSession hook -->
+  <rect x="140" y="135" width="160" height="55" fill="#1a1a30" stroke="#3a3a7a" stroke-width="1" rx="3"/>
+  <text x="220" y="156" font-size="11" fill="#aaaaee" text-anchor="middle" font-weight="700">useVoiceSession.ts</text>
+  <text x="220" y="169" font-size="9" fill="#666" text-anchor="middle">MediaRecorder + WebSocket</text>
+  <text x="220" y="181" font-size="9" fill="#555" text-anchor="middle">Chunk-size VAD · Blob TTS</text>
+
+  <!-- Admin dashboard -->
+  <rect x="760" y="50" width="150" height="60" fill="#1a1525" stroke="#6a4a8a" stroke-width="1" rx="3"/>
+  <text x="835" y="73" font-size="11" fill="#aa88cc" text-anchor="middle" font-weight="700">Admin Dashboard</text>
+  <text x="835" y="87" font-size="9" fill="#666" text-anchor="middle">/admin/dashboard</text>
+  <text x="835" y="100" font-size="9" fill="#555" text-anchor="middle">StatsCard · BookingsTable</text>
+
+  <!-- Confirmation page -->
+  <rect x="940" y="50" width="140" height="60" fill="#151525" stroke="#4a4a8a" stroke-width="1" rx="3"/>
+  <text x="1010" y="73" font-size="11" fill="#8888dd" text-anchor="middle" font-weight="700">Confirmation</text>
+  <text x="1010" y="87" font-size="9" fill="#666" text-anchor="middle">/confirmation</text>
+  <text x="1010" y="100" font-size="9" fill="#555" text-anchor="middle">Booking ticket + code</text>
+
+  <!-- ── NEXT.JS SERVER LAYER ── -->
+
+  <!-- WebSocket route -->
+  <rect x="50" y="220" width="160" height="70" fill="#0d1a0d" stroke="#2d5a2d" stroke-width="1.5" rx="3"/>
+  <text x="130" y="242" font-size="11" fill="#5cb85c" text-anchor="middle" font-weight="700">WebSocket Server</text>
+  <text x="130" y="256" font-size="9" fill="#666" text-anchor="middle">/api/voice/route.ts</text>
+  <text x="130" y="269" font-size="9" fill="#555" text-anchor="middle">ws upgrade · session state</text>
+  <text x="130" y="281" font-size="9" fill="#444" text-anchor="middle">silence detection · nudge</text>
+
+  <!-- Dialogue state machine -->
+  <rect x="250" y="220" width="160" height="70" fill="#1a130d" stroke="#5a4700" stroke-width="1.5" rx="3"/>
+  <text x="330" y="242" font-size="11" fill="#D4AF37" text-anchor="middle" font-weight="700">Dialogue Manager</text>
+  <text x="330" y="256" font-size="9" fill="#666" text-anchor="middle">stateMachine.ts</text>
+  <text x="330" y="269" font-size="9" fill="#555" text-anchor="middle">intentDetector · slotFiller</text>
+  <text x="330" y="281" font-size="9" fill="#444" text-anchor="middle">codeGenerator · normaliser</text>
+
+  <!-- Availability service -->
+  <rect x="450" y="220" width="150" height="70" fill="#0d1a1a" stroke="#2d5a5a" stroke-width="1" rx="3"/>
+  <text x="525" y="242" font-size="11" fill="#70cccc" text-anchor="middle" font-weight="700">Availability</text>
+  <text x="525" y="256" font-size="9" fill="#666" text-anchor="middle">service.ts</text>
+  <text x="525" y="269" font-size="9" fill="#555" text-anchor="middle">mockInventory.json</text>
+  <text x="525" y="281" font-size="9" fill="#444" text-anchor="middle">occasionConfig.json</text>
+
+  <!-- API routes -->
+  <rect x="640" y="220" width="120" height="70" fill="#0d1117" stroke="#333" stroke-width="1" rx="3"/>
+  <text x="700" y="242" font-size="11" fill="#ccc" text-anchor="middle" font-weight="700">API Routes</text>
+  <text x="700" y="256" font-size="9" fill="#666" text-anchor="middle">/api/stt</text>
+  <text x="700" y="268" font-size="9" fill="#666" text-anchor="middle">/api/llm · /api/tts</text>
+  <text x="700" y="280" font-size="9" fill="#444" text-anchor="middle">/api/admin/*</text>
+
+  <!-- proxy.ts / NextAuth -->
+  <rect x="790" y="220" width="150" height="70" fill="#120d1a" stroke="#4a2d6a" stroke-width="1" rx="3"/>
+  <text x="865" y="242" font-size="11" fill="#aa70dd" text-anchor="middle" font-weight="700">proxy.ts</text>
+  <text x="865" y="256" font-size="9" fill="#666" text-anchor="middle">NextAuth v5 middleware</text>
+  <text x="865" y="269" font-size="9" fill="#555" text-anchor="middle">Protects /admin/*</text>
+  <text x="865" y="281" font-size="9" fill="#444" text-anchor="middle">auth.ts · Google OAuth</text>
+
+  <!-- ── AI PROVIDERS LAYER ── -->
+
+  <!-- Gemini STT -->
+  <rect x="50" y="430" width="160" height="80" fill="#0d1f0d" stroke="#2d7a2d" stroke-width="1.5" rx="3"/>
+  <text x="130" y="452" font-size="11" fill="#5cb85c" text-anchor="middle" font-weight="700">Gemini STT</text>
+  <text x="130" y="466" font-size="9" fill="#666" text-anchor="middle">gemini-2.5-flash-lite</text>
+  <text x="130" y="479" font-size="9" fill="#555" text-anchor="middle">Audio blob → transcript</text>
+  <text x="130" y="492" font-size="9" fill="#444" text-anchor="middle">Multimodal audio inference</text>
+  <text x="130" y="503" font-size="9" fill="#335" text-anchor="middle">Provider: Google AI</text>
+
+  <!-- Gemini LLM -->
+  <rect x="250" y="430" width="160" height="80" fill="#0d1f0d" stroke="#2d7a2d" stroke-width="1.5" rx="3"/>
+  <text x="330" y="452" font-size="11" fill="#5cb85c" text-anchor="middle" font-weight="700">Gemini LLM</text>
+  <text x="330" y="466" font-size="9" fill="#666" text-anchor="middle">gemini-2.5-flash-lite</text>
+  <text x="330" y="479" font-size="9" fill="#555" text-anchor="middle">Intent · SlotFill · Response</text>
+  <text x="330" y="492" font-size="9" fill="#555" text-anchor="middle">confirmCheck · structured out</text>
+  <text x="330" y="503" font-size="9" fill="#335" text-anchor="middle">Provider: Google AI</text>
+
+  <!-- Sarvam TTS -->
+  <rect x="450" y="430" width="160" height="80" fill="#1a0d0d" stroke="#7a2d2d" stroke-width="1.5" rx="3"/>
+  <text x="530" y="452" font-size="11" fill="#e07070" text-anchor="middle" font-weight="700">Sarvam AI TTS</text>
+  <text x="530" y="466" font-size="9" fill="#666" text-anchor="middle">bulbul:v3 · speaker: shubh</text>
+  <text x="530" y="479" font-size="9" fill="#555" text-anchor="middle">Text → streamed MP3</text>
+  <text x="530" y="492" font-size="9" fill="#555" text-anchor="middle">en-IN · &lt;200ms first byte</text>
+  <text x="530" y="503" font-size="9" fill="#533" text-anchor="middle">Provider: Sarvam AI</text>
+
+  <!-- ── STORAGE LAYER ── -->
+
+  <!-- Google Calendar -->
+  <rect x="50" y="625" width="160" height="70" fill="#1a1200" stroke="#5a4700" stroke-width="1" rx="3"/>
+  <text x="130" y="647" font-size="11" fill="#D4AF37" text-anchor="middle" font-weight="700">Google Calendar</text>
+  <text x="130" y="661" font-size="9" fill="#666" text-anchor="middle">googleapis v4 · calendar.ts</text>
+  <text x="130" y="674" font-size="9" fill="#555" text-anchor="middle">Tentative holds · 2hr / 3hr</text>
+  <text x="130" y="686" font-size="9" fill="#444" text-anchor="middle">Service Account auth</text>
+
+  <!-- Google Sheets -->
+  <rect x="250" y="625" width="160" height="70" fill="#1a1200" stroke="#5a4700" stroke-width="1" rx="3"/>
+  <text x="330" y="647" font-size="11" fill="#D4AF37" text-anchor="middle" font-weight="700">Google Sheets</text>
+  <text x="330" y="661" font-size="9" fill="#666" text-anchor="middle">googleapis v4 · sheets.ts</text>
+  <text x="330" y="674" font-size="9" fill="#555" text-anchor="middle">Daily Reservation Log</text>
+  <text x="330" y="686" font-size="9" fill="#444" text-anchor="middle">getAllReservations · lookup</text>
+
+  <!-- NextAuth / Google OAuth -->
+  <rect x="760" y="625" width="160" height="70" fill="#120d1a" stroke="#4a2d6a" stroke-width="1" rx="3"/>
+  <text x="840" y="647" font-size="11" fill="#aa70dd" text-anchor="middle" font-weight="700">Google OAuth</text>
+  <text x="840" y="661" font-size="9" fill="#666" text-anchor="middle">NextAuth v5 beta</text>
+  <text x="840" y="674" font-size="9" fill="#555" text-anchor="middle">Admin portal login</text>
+  <text x="840" y="686" font-size="9" fill="#444" text-anchor="middle">Session JWT (httpOnly)</text>
+
+  <!-- JSON File Store -->
+  <rect x="450" y="625" width="160" height="70" fill="#0d1a1a" stroke="#2d5a5a" stroke-width="1" rx="3"/>
+  <text x="530" y="647" font-size="11" fill="#70cccc" text-anchor="middle" font-weight="700">JSON Config</text>
+  <text x="530" y="661" font-size="9" fill="#666" text-anchor="middle">mockInventory.json</text>
+  <text x="530" y="674" font-size="9" fill="#555" text-anchor="middle">occasionConfig.json</text>
+  <text x="530" y="686" font-size="9" fill="#444" text-anchor="middle">Admin toggles update live</text>
+
+  <!-- ══════════════════════════
+       ARROWS — Browser to Next.js
+  ══════════════════════════ -->
+
+  <!-- Widget/Reserve → useVoiceSession -->
+  <line x1="120" y1="110" x2="180" y2="135" stroke="#3a3a6a" stroke-width="1" marker-end="url(#arr)"/>
+  <line x1="300" y1="110" x2="270" y2="135" stroke="#3a3a6a" stroke-width="1" marker-end="url(#arr)"/>
+
+  <!-- useVoiceSession → WebSocket (WS binary) -->
+  <line x1="180" y1="165" x2="130" y2="220" stroke="#D4AF37" stroke-width="1.5" marker-end="url(#arr-gold)"/>
+  <text x="100" y="197" font-size="9" fill="#aa8800">WS binary</text>
+  <text x="100" y="208" font-size="9" fill="#aa8800">audio chunks</text>
+
+  <!-- WebSocket ↔ Dialogue Manager -->
+  <line x1="210" y1="255" x2="250" y2="255" stroke="#D4AF37" stroke-width="1.5" marker-end="url(#arr-gold)"/>
+  <text x="215" y="249" font-size="8" fill="#887700">turn</text>
+
+  <!-- Dialogue Manager → Availability -->
+  <line x1="410" y1="255" x2="450" y2="255" stroke="#3a7a7a" stroke-width="1" marker-end="url(#arr)"/>
+  <text x="415" y="249" font-size="8" fill="#4a9a9a">slots?</text>
+
+  <!-- Dialogue Manager → Gemini LLM -->
+  <line x1="330" y1="290" x2="330" y2="430" stroke="#4a9a4a" stroke-width="1.5" marker-end="url(#arr-green)"/>
+  <text x="335" y="365" font-size="9" fill="#4a9a4a">intent / slot</text>
+  <text x="335" y="377" font-size="9" fill="#4a9a4a">fill / confirm</text>
+
+  <!-- WebSocket → Gemini STT -->
+  <line x1="130" y1="290" x2="130" y2="430" stroke="#4a9a4a" stroke-width="1.5" marker-end="url(#arr-green)"/>
+  <text x="135" y="365" font-size="9" fill="#4a9a4a">audio blob</text>
+
+  <!-- WebSocket → Sarvam TTS (via text) -->
+  <line x1="155" y1="255" x2="445" y2="460" stroke="#cc5555" stroke-width="1" marker-end="url(#arr-red)"/>
+  <text x="260" y="345" font-size="9" fill="#cc5555">response text</text>
+
+  <!-- Sarvam → WebSocket (audio stream back) -->
+  <path d="M 450,490 C 380,520 200,520 155,290" stroke="#cc5555" stroke-width="1" fill="none" stroke-dasharray="4,3" marker-end="url(#arr-red)"/>
+  <text x="250" y="530" font-size="9" fill="#cc5555">MP3 stream</text>
+  <text x="250" y="542" font-size="9" fill="#cc5555">base64 chunks</text>
+
+  <!-- WebSocket → useVoiceSession (JSON messages) -->
+  <line x1="210" y1="165" x2="155" y2="220" stroke="#6666cc" stroke-width="1" stroke-dasharray="4,2" marker-end="url(#arr-blue)"/>
+  <text x="155" y="193" font-size="9" fill="#8888dd">JSON msgs</text>
+  <text x="155" y="204" font-size="9" fill="#8888dd">state·audio</text>
+
+  <!-- Dialogue Manager → Google Calendar -->
+  <line x1="280" y1="290" x2="130" y2="625" stroke="#886600" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arr-gold)"/>
+  <text x="155" y="460" font-size="9" fill="#886600">MCP hold</text>
+
+  <!-- Dialogue Manager → Google Sheets -->
+  <line x1="330" y1="290" x2="330" y2="625" stroke="#886600" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arr-gold)"/>
+  <text x="335" y="460" font-size="9" fill="#886600">MCP log</text>
+
+  <!-- Admin Dashboard → API routes -->
+  <line x1="835" y1="110" x2="720" y2="220" stroke="#6a4a8a" stroke-width="1" marker-end="url(#arr)"/>
+
+  <!-- API routes → Google Sheets (admin read) -->
+  <line x1="700" y1="290" x2="380" y2="625" stroke="#555" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arr)"/>
+  <text x="560" y="455" font-size="9" fill="#555">getAllReservations</text>
+
+  <!-- API routes → JSON Config (availability toggle) -->
+  <line x1="700" y1="290" x2="560" y2="625" stroke="#3a7a7a" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arr)"/>
+
+  <!-- proxy.ts → NextAuth -->
+  <line x1="865" y1="290" x2="840" y2="625" stroke="#4a2d6a" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arr)"/>
+
+  <!-- Confirmation → WebSocket (code received) -->
+  <line x1="1010" y1="110" x2="230" y2="165" stroke="#D4AF37" stroke-width="1" stroke-dasharray="5,3" marker-end="url(#arr-gold)"/>
+  <text x="620" y="140" font-size="9" fill="#aa8800">redirect after TTS</text>
+
+  <!-- ══════════════════════════
+       LEGEND
+  ══════════════════════════ -->
+  <rect x="640" y="430" width="480" height="155" fill="#0d0d0d" stroke="#222" rx="3"/>
+  <text x="660" y="452" font-size="10" fill="#555" font-weight="700" letter-spacing="2">LEGEND</text>
+
+  <line x1="660" y1="470" x2="700" y2="470" stroke="#D4AF37" stroke-width="1.5"/>
+  <text x="708" y="474" font-size="10" fill="#aaa">Voice data path (WebSocket binary/JSON)</text>
+
+  <line x1="660" y1="490" x2="700" y2="490" stroke="#4a9a4a" stroke-width="1.5"/>
+  <text x="708" y="494" font-size="10" fill="#aaa">AI API call</text>
+
+  <line x1="660" y1="510" x2="700" y2="510" stroke="#cc5555" stroke-width="1.5"/>
+  <text x="708" y="514" font-size="10" fill="#aaa">TTS audio stream</text>
+
+  <line x1="660" y1="530" x2="700" y2="530" stroke="#886600" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="708" y="534" font-size="10" fill="#aaa">Google API (MCP) call</text>
+
+  <line x1="660" y1="550" x2="700" y2="550" stroke="#555" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="708" y="554" font-size="10" fill="#aaa">Admin data / config read/write</text>
+
+  <rect x="660" y="566" width="10" height="10" fill="#4a4a8a" rx="1"/>
+  <text x="678" y="575" font-size="10" fill="#aaa">Browser (React/Next.js client)</text>
+
+  <rect x="800" y="566" width="10" height="10" fill="#2d5a2d" rx="1"/>
+  <text x="818" y="575" font-size="10" fill="#aaa">Google AI (Gemini)</text>
+
+  <rect x="660" y="582" width="10" height="10" fill="#5a2d2d" rx="1"/>
+  <text x="678" y="591" font-size="10" fill="#aaa">Sarvam AI (TTS)</text>
+
+  <rect x="800" y="582" width="10" height="10" fill="#4a2d6a" rx="1"/>
+  <text x="818" y="591" font-size="10" fill="#aaa">NextAuth / Google OAuth</text>
+</svg>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     DATA FLOW STEPS
+════════════════════════════════════════════════════════ -->
+<div class="section-title">Voice Booking — Request Data Flow (1 turn)</div>
+<div class="flow-steps">
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-title">User Speaks</div>
+    <div class="step-body">Browser captures mic via MediaRecorder (250ms chunks, audio/webm;codecs=opus). Chunks sent as binary WebSocket frames.</div>
+    <div class="step-provider">Client: useVoiceSession.ts</div>
+  </div>
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-title">VAD Trigger</div>
+    <div class="step-body">Chunk-size silence detection: speech ≈ ≥800B chunk. After speech + 1.5s silence → send stop_speech. Max 8s safety timer via setTimeout.</div>
+    <div class="step-provider">Client: chunk-size VAD</div>
+  </div>
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-title">STT</div>
+    <div class="step-body">Server concatenates all binary chunks → base64 encodes → sends to Gemini 2.5 Flash Lite multimodal. Returns {transcript, confidence}.</div>
+    <div class="step-provider">Google AI: gemini-2.5-flash-lite</div>
+  </div>
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-title">Intent + Slots</div>
+    <div class="step-body">stateMachine.ts runs intentDetector → slotFiller → availability check in sequence. Structured JSON output from Gemini.</div>
+    <div class="step-provider">Google AI: gemini-2.5-flash-lite</div>
+  </div>
+  <div class="step">
+    <div class="step-num">5</div>
+    <div class="step-title">LLM Response</div>
+    <div class="step-body">Gemini generates natural-language response with full session context injected. System prompt enforces all guardrails.</div>
+    <div class="step-provider">Google AI: gemini-2.5-flash-lite</div>
+  </div>
+  <div class="step">
+    <div class="step-num">6</div>
+    <div class="step-title">TTS Stream</div>
+    <div class="step-body">Response text sent to Sarvam AI. MP3 audio streamed back, chunked as base64 JSON frames over WebSocket. Browser collects all chunks then plays as single Blob.</div>
+    <div class="step-provider">Sarvam AI: bulbul:v3 en-IN</div>
+  </div>
+  <div class="step">
+    <div class="step-num">7</div>
+    <div class="step-title">MCP Writes</div>
+    <div class="step-body">On booking confirm: createTentativeHold (Calendar) + appendReservation (Sheets) via googleapis service-account auth. 1 retry on failure.</div>
+    <div class="step-provider">Google APIs: Calendar v3 · Sheets v4</div>
+  </div>
+  <div class="step">
+    <div class="step-num">8</div>
+    <div class="step-title">Code Issued</div>
+    <div class="step-body">TABLE-[A-HJ-NP-Z][00-99] generated, spoken twice in TTS. After audio ends, client fires onConfirmed → router.push('/confirmation').</div>
+    <div class="step-provider">Client: post-playback redirect</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     COMPONENT INVENTORY
+════════════════════════════════════════════════════════ -->
+<div class="section-title" style="margin-top:40px">Component Inventory</div>
+<div class="flow-steps" style="grid-template-columns: repeat(auto-fill, minmax(220px, 1fr))">
+  <div class="step">
+    <div class="step-title">Frontend Framework</div>
+    <div class="step-body">Next.js 16.2.9 (App Router, Turbopack dev). React 19. Tailwind CSS v4.</div>
+  </div>
+  <div class="step">
+    <div class="step-title">Speech-to-Text</div>
+    <div class="step-body">Gemini 2.5 Flash Lite — multimodal audio input. Batch transcription (not streaming). Returns transcript + confidence score.</div>
+  </div>
+  <div class="step">
+    <div class="step-title">LLM (Dialogue)</div>
+    <div class="step-body">Gemini 2.5 Flash Lite — intent detection, slot filling, confirmation check, response generation. Structured JSON outputs via responseSchema.</div>
+  </div>
+  <div class="step">
+    <div class="step-title">Text-to-Speech</div>
+    <div class="step-body">Sarvam AI bulbul:v3. Speaker: shubh. Language: en-IN. HTTP streaming to server, collected as Blob, played via HTML Audio API.</div>
+  </div>
+  <div class="step">
+    <div class="step-title">Real-time Transport</div>
+    <div class="step-body">Custom WebSocket server via Node.js http.Server upgrade hook on Next.js. Binary audio frames client→server, JSON message frames server→client.</div>
+  </div>
+  <div class="step">
+    <div class="step-title">Calendar Integration</div>
+    <div class="step-body">Google Calendar API v3. Tentative holds (2hr standard, 3hr large group). Service account (server-to-server auth). 1-retry wrapper.</div>
+  </div>
+  <div class="step">
+    <div class="step-title">Reservation Log</div>
+    <div class="step-body">Google Sheets API v4. "Daily Reservation Log" sheet. 10-column schema. getAllReservations, appendReservation, updateStatus, lookupByCode.</div>
+  </div>
+  <div class="step">
+    <div class="step-title">Authentication</div>
+    <div class="step-body">NextAuth v5 beta (App Router native). Google OAuth provider. proxy.ts protects /admin/*. JWT sessions (httpOnly cookie).</div>
+  </div>
+  <div class="step">
+    <div class="step-title">Availability Store</div>
+    <div class="step-body">JSON files on disk. mockInventory.json (slot times by date/occasion). occasionConfig.json (on/off per occasion). Admin PATCH updates live.</div>
+  </div>
+  <div class="step">
+    <div class="step-title">Session State</div>
+    <div class="step-body">In-memory Map on Next.js server. Keyed by sessionId. 5-minute TTL. Full SessionState interface: intent, slots, code, history, calendar/sheet IDs.</div>
+  </div>
+  <div class="step">
+    <div class="step-title">VAD</div>
+    <div class="step-body">Client-side chunk-size detection in MediaRecorder.ondataavailable. Speech ≥ 800B. Silence after 1.5s post-speech triggers submit. 8s setTimeout ceiling.</div>
+  </div>
+  <div class="step">
+    <div class="step-title">Admin Portal</div>
+    <div class="step-body">StatsCard · BookingsTable · AvailabilityToggle. Live data from /api/admin/reservations (Sheets) and /api/admin/availability (JSON). Optimistic toggle UI.</div>
+  </div>
+</div>
+
+<div style="max-width:1200px;margin:40px auto 0;text-align:center;font-size:11px;color:#333;padding-bottom:40px;">
+  AETHER DINING · TABLEVOICE · ARCHITECTURE DIAGRAM · SPRINT 10 COMPLETE · JUNE 2026
+</div>
+
+</body>
+</html>

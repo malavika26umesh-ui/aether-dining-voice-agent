@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AETHER | Admin Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Playfair+Display:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary": "#f2ca50",
+                    "on-surface": "#121212",
+                    "charcoal": "#121212",
+                    "soft-ivory": "#FDFBF7",
+                    "brushed-gold": "#D4AF37",
+                    "warm-amber": "#E5A93B",
+                    "background": "#FDFBF7",
+                    "surface": "#ffffff",
+                    "outline-variant": "rgba(212, 175, 55, 0.2)",
+                    "success": "#34C759",
+                    "danger": "#FF3B30",
+                    "warning": "#FF9500"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0px",
+                    "lg": "0px",
+                    "xl": "0px",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "gutter": "24px",
+                    "container-max": "1280px",
+                    "unit": "4px",
+                    "section-gap": "80px",
+                    "margin-desktop": "48px"
+            },
+            "fontFamily": {
+                    "body": ["Inter", "sans-serif"],
+                    "headline": ["Playfair Display", "serif"]
+            },
+            "fontSize": {
+                    "label-sm": ["12px", {"lineHeight": "1", "fontWeight": "500"}],
+                    "label-lg": ["14px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { background-color: #FDFBF7; color: #121212; font-family: 'Inter', sans-serif; }
+        .thin-border { border: 1px solid rgba(212, 175, 55, 0.2); }
+        .sidebar-active {
+            background-color: rgba(212, 175, 55, 0.08);
+            border-right: 2px solid #D4AF37;
+            color: #121212;
+            font-weight: 600;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #D4AF37; }
+        input:focus { outline: none; ring: 0; }
+        .sharp-corners { border-radius: 0px !important; }
+    </style>
+</head>
+<body class="flex min-h-screen font-body">
+<!-- LEFT SIDEBAR -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-white border-r border-outline-variant flex flex-col py-8 px-0 z-50">
+<div class="mb-12 px-6">
+<h1 class="font-headline text-2xl text-brushed-gold tracking-widest font-bold">AETHER</h1>
+<p class="text-[10px] text-charcoal/40 uppercase tracking-[0.2em] mt-1 font-bold">Management Portal</p>
+</div>
+<nav class="flex-1">
+<a class="sidebar-active flex items-center gap-3 px-6 py-4 transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="text-label-lg">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-4 text-charcoal/50 hover:bg-black/5 hover:text-charcoal transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">calendar_today</span>
+<span class="text-label-lg">Calendar</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-4 text-charcoal/50 hover:bg-black/5 hover:text-charcoal transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">description</span>
+<span class="text-label-lg">Sheet Log</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-4 text-charcoal/50 hover:bg-black/5 hover:text-charcoal transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">rule</span>
+<span class="text-label-lg">Availability Rules</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-4 text-charcoal/50 hover:bg-black/5 hover:text-charcoal transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="text-label-lg">Settings</span>
+</a>
+</nav>
+<div class="mt-auto px-6 pt-8 border-t border-outline-variant/50">
+<div class="flex items-center gap-3 py-4">
+<div class="w-8 h-8 rounded-full bg-brushed-gold/10 flex items-center justify-center text-brushed-gold font-bold text-xs">A</div>
+<div class="overflow-hidden">
+<p class="text-label-lg text-charcoal truncate">Admin User</p>
+<p class="text-[10px] text-charcoal/40">Sign Out</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- MAIN CONTENT -->
+<main class="ml-64 flex-1 flex flex-row min-h-screen">
+<div class="flex-1 flex flex-col">
+<!-- HEADER -->
+<header class="h-24 px-12 bg-white/80 backdrop-blur-md flex items-center justify-between sticky top-0 z-40 border-b border-outline-variant/30">
+<div>
+<h2 class="font-headline text-headline-md text-charcoal">Aether Dining Manager Portal</h2>
+<div class="flex items-center gap-2 mt-1">
+<span class="material-symbols-outlined text-sm text-brushed-gold">calendar_month</span>
+<p class="text-label-sm text-brushed-gold">Today: June 14, 2026</p>
+</div>
+</div>
+<div class="flex items-center gap-8">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-0 top-1/2 -translate-y-1/2 text-charcoal/30">search</span>
+<input class="bg-transparent border-none border-b border-transparent focus:border-brushed-gold focus:ring-0 pl-8 pr-4 py-2 w-72 text-body-sm transition-all placeholder:text-charcoal/20" placeholder="Search bookings by code or name..." type="text"/>
+</div>
+<button class="p-2 relative text-charcoal/60">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-1.5 h-1.5 bg-danger rounded-full"></span>
+</button>
+</div>
+</header>
+<!-- CANVAS -->
+<div class="p-12 space-y-12">
+<!-- STAT CARDS -->
+<div class="grid grid-cols-3 gap-8">
+<div class="bg-white thin-border p-10 sharp-corners">
+<div class="flex items-center justify-between mb-8">
+<p class="text-label-sm text-charcoal/40 uppercase tracking-widest font-bold">Total Bookings</p>
+<span class="text-success text-xs font-bold flex items-center gap-1">+12 today</span>
+</div>
+<h3 class="font-headline text-5xl text-charcoal">42</h3>
+</div>
+<div class="bg-white thin-border p-10 sharp-corners">
+<div class="flex items-center justify-between mb-8">
+<p class="text-label-sm text-charcoal/40 uppercase tracking-widest font-bold">Occupancy Rate</p>
+<span class="text-charcoal/40 text-xs font-bold uppercase">Near Capacity</span>
+</div>
+<h3 class="font-headline text-5xl text-charcoal">84%</h3>
+<div class="w-full bg-black/5 h-[2px] mt-6">
+<div class="bg-brushed-gold h-full w-[84%]"></div>
+</div>
+</div>
+<div class="bg-white thin-border p-10 sharp-corners">
+<div class="flex items-center justify-between mb-8">
+<p class="text-label-sm text-charcoal/40 uppercase tracking-widest font-bold">Avg Booking Time</p>
+<span class="text-charcoal/40 text-xs font-bold uppercase">Efficiency</span>
+</div>
+<h3 class="font-headline text-5xl text-charcoal">64 <span class="text-2xl font-body font-normal text-charcoal/40">seconds</span></h3>
+</div>
+</div>
+<!-- ACTIVE BOOKINGS -->
+<section class="bg-white thin-border sharp-corners overflow-hidden flex flex-col">
+<div class="px-10 py-8 flex items-center justify-between border-b border-outline-variant/30">
+<h3 class="font-headline text-2xl text-charcoal">Active Bookings</h3>
+<div class="flex gap-4">
+<button class="px-6 py-2 border border-charcoal/10 text-label-lg text-charcoal/60 hover:border-brushed-gold hover:text-brushed-gold transition-colors">
+                            Filter
+                        </button>
+<button class="bg-brushed-gold text-white px-8 py-2 text-label-lg font-bold hover:bg-black transition-colors">
+                            New Reservation
+                        </button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-soft-ivory/50 border-b border-outline-variant/30">
+<th class="px-10 py-5 text-label-sm text-charcoal/40 uppercase tracking-widest font-bold">Timestamp</th>
+<th class="px-10 py-5 text-label-sm text-charcoal/40 uppercase tracking-widest font-bold">Code</th>
+<th class="px-10 py-5 text-label-sm text-charcoal/40 uppercase tracking-widest font-bold">Date</th>
+<th class="px-10 py-5 text-label-sm text-charcoal/40 uppercase tracking-widest font-bold">Time (IST)</th>
+<th class="px-10 py-5 text-label-sm text-charcoal/40 uppercase tracking-widest font-bold">Occasion</th>
+<th class="px-10 py-5 text-label-sm text-charcoal/40 uppercase tracking-widest font-bold">Party</th>
+<th class="px-10 py-5 text-label-sm text-charcoal/40 uppercase tracking-widest font-bold">Status</th>
+<th class="px-10 py-5 text-label-sm text-charcoal/40 uppercase tracking-widest font-bold text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<!-- Row 1 -->
+<tr class="hover:bg-soft-ivory/30 transition-colors">
+<td class="px-10 py-8 text-body-sm text-charcoal/60">19:15</td>
+<td class="px-10 py-8 font-bold text-brushed-gold">TABLE-R07</td>
+<td class="px-10 py-8 text-body-sm text-charcoal">2026-06-14</td>
+<td class="px-10 py-8 text-body-sm text-charcoal">19:00</td>
+<td class="px-10 py-8">
+<span class="text-[10px] font-bold uppercase tracking-widest bg-charcoal text-white px-3 py-1">Special Occasion</span>
+</td>
+<td class="px-10 py-8 text-body-sm text-charcoal">2</td>
+<td class="px-10 py-8">
+<span class="flex items-center gap-2 text-success text-[11px] font-bold uppercase tracking-widest">
+<span class="w-1.5 h-1.5 bg-success rounded-full"></span> CONFIRMED
+                                    </span>
+</td>
+<td class="px-10 py-8 text-right space-x-4">
+<button class="material-symbols-outlined text-[18px] text-charcoal/20 hover:text-brushed-gold transition-colors">edit</button>
+<button class="material-symbols-outlined text-[18px] text-charcoal/20 hover:text-danger transition-colors">delete</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-soft-ivory/30 transition-colors">
+<td class="px-10 py-8 text-body-sm text-charcoal/60">18:45</td>
+<td class="px-10 py-8 font-bold text-brushed-gold">TABLE-B12</td>
+<td class="px-10 py-8 text-body-sm text-charcoal">2026-06-14</td>
+<td class="px-10 py-8 text-body-sm text-charcoal">20:30</td>
+<td class="px-10 py-8">
+<span class="text-[10px] font-bold uppercase tracking-widest border border-charcoal/20 px-3 py-1">Outdoor/Patio</span>
+</td>
+<td class="px-10 py-8 text-body-sm text-charcoal">4</td>
+<td class="px-10 py-8">
+<span class="flex items-center gap-2 text-success text-[11px] font-bold uppercase tracking-widest">
+<span class="w-1.5 h-1.5 bg-success rounded-full"></span> CONFIRMED
+                                    </span>
+</td>
+<td class="px-10 py-8 text-right space-x-4">
+<button class="material-symbols-outlined text-[18px] text-charcoal/20 hover:text-brushed-gold transition-colors">edit</button>
+<button class="material-symbols-outlined text-[18px] text-charcoal/20 hover:text-danger transition-colors">delete</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-10 py-6 flex items-center justify-between bg-soft-ivory/20">
+<p class="text-body-sm text-charcoal/30 italic">Displaying active session entries</p>
+<div class="flex gap-2">
+<button class="w-10 h-10 border border-outline-variant/30 flex items-center justify-center text-charcoal/40 hover:bg-brushed-gold hover:text-white transition-colors"><span class="material-symbols-outlined text-sm">chevron_left</span></button>
+<button class="w-10 h-10 bg-brushed-gold text-white flex items-center justify-center font-bold text-sm">1</button>
+<button class="w-10 h-10 border border-outline-variant/30 flex items-center justify-center text-charcoal/60 hover:bg-brushed-gold hover:text-white transition-colors">2</button>
+<button class="w-10 h-10 border border-outline-variant/30 flex items-center justify-center text-charcoal/40 hover:bg-brushed-gold hover:text-white transition-colors"><span class="material-symbols-outlined text-sm">chevron_right</span></button>
+</div>
+</div>
+</section>
+<footer class="pt-8 text-center md:text-left">
+<p class="text-label-sm text-charcoal/30 uppercase tracking-[0.2em] font-bold">© 2026 AETHER HOSPITALITY GROUP. GLOBAL MANAGEMENT SYNC.</p>
+</footer>
+</div>
+</div>
+<!-- RIGHT SIDEBAR (AVAILABILITY CONTROLLER) -->
+<aside class="w-80 h-screen sticky top-0 bg-white border-l border-outline-variant/30 p-10 flex flex-col z-50">
+<h3 class="font-headline text-xl text-charcoal mb-8">Dining Occasions</h3>
+<div class="space-y-8 flex-1">
+<div class="flex items-center justify-between group">
+<div>
+<p class="text-label-lg text-charcoal">Main Dining</p>
+<p class="text-[10px] text-success font-bold uppercase tracking-wider">Open</p>
+</div>
+<button class="w-12 h-6 bg-brushed-gold relative transition-all rounded-full p-1"><span class="block w-4 h-4 bg-white rounded-full ml-auto"></span></button>
+</div>
+<div class="flex items-center justify-between group">
+<div>
+<p class="text-label-lg text-charcoal">Private Terrace</p>
+<p class="text-[10px] text-success font-bold uppercase tracking-wider">Open</p>
+</div>
+<button class="w-12 h-6 bg-brushed-gold relative transition-all rounded-full p-1"><span class="block w-4 h-4 bg-white rounded-full ml-auto"></span></button>
+</div>
+<div class="flex items-center justify-between group">
+<div>
+<p class="text-label-lg text-charcoal">Oyster Bar</p>
+<p class="text-[10px] text-success font-bold uppercase tracking-wider">Open</p>
+</div>
+<button class="w-12 h-6 bg-brushed-gold relative transition-all rounded-full p-1"><span class="block w-4 h-4 bg-white rounded-full ml-auto"></span></button>
+</div>
+<div class="flex items-center justify-between group opacity-50">
+<div>
+<p class="text-label-lg text-charcoal">Cellar Tasting</p>
+<p class="text-[10px] text-danger font-bold uppercase tracking-wider">Closed</p>
+</div>
+<button class="w-12 h-6 bg-charcoal/10 relative transition-all rounded-full p-1"><span class="block w-4 h-4 bg-white rounded-full mr-auto"></span></button>
+</div>
+<div class="flex items-center justify-between group">
+<div>
+<p class="text-label-lg text-charcoal">Outdoor/Patio</p>
+<p class="text-[10px] text-success font-bold uppercase tracking-wider">Open</p>
+</div>
+<button class="w-12 h-6 bg-brushed-gold relative transition-all rounded-full p-1"><span class="block w-4 h-4 bg-white rounded-full ml-auto"></span></button>
+</div>
+</div>
+<div class="mt-auto pt-10 border-t border-outline-variant/30">
+<div class="bg-soft-ivory p-6 sharp-corners thin-border">
+<p class="text-[10px] font-bold uppercase text-charcoal/40 tracking-widest mb-3">System Health</p>
+<div class="flex items-center gap-2 mb-4">
+<span class="w-2 h-2 bg-success rounded-full"></span>
+<p class="text-label-sm text-charcoal">All systems operational</p>
+</div>
+<button class="w-full py-3 border border-charcoal text-[10px] font-bold uppercase tracking-widest hover:bg-charcoal hover:text-white transition-all">Support Portal</button>
+</div>
+</div>
+</aside>
+</main>
+<script>
+        // Minimal logic for toggle visual state if needed for demo
+        document.querySelectorAll('aside button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const dot = this.querySelector('span');
+                const statusLabel = this.previousElementSibling.querySelector('p:last-child');
+                const container = this.closest('.group');
+                
+                if (this.classList.contains('bg-brushed-gold')) {
+                    this.classList.remove('bg-brushed-gold');
+                    this.classList.add('bg-charcoal/10');
+                    dot.classList.remove('ml-auto');
+                    dot.classList.add('mr-auto');
+                    statusLabel.textContent = 'Closed';
+                    statusLabel.classList.remove('text-success');
+                    statusLabel.classList.add('text-danger');
+                    container.classList.add('opacity-50');
+                } else {
+                    this.classList.remove('bg-charcoal/10');
+                    this.classList.add('bg-brushed-gold');
+                    dot.classList.remove('mr-auto');
+                    dot.classList.add('ml-auto');
+                    statusLabel.textContent = 'Open';
+                    statusLabel.classList.remove('text-danger');
+                    statusLabel.classList.add('text-success');
+                    container.classList.remove('opacity-50');
+                }
+            });
+        });
+    </script>
+</body></html>

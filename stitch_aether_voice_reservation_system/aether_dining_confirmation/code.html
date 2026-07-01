@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Reservation Confirmed | AETHER</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Playfair+Display:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed-dim": "#e9c349",
+                    "surface-variant": "#38342b",
+                    "danger": "#FF3B30",
+                    "on-primary-fixed": "#241a00",
+                    "inverse-primary": "#735c00",
+                    "secondary-container": "#4a4949",
+                    "on-tertiary-container": "#454543",
+                    "outline-variant": "#4d4635",
+                    "primary-container": "#d4af37",
+                    "error-container": "#93000a",
+                    "secondary-fixed": "#e5e2e1",
+                    "on-primary": "#3c2f00",
+                    "inverse-on-surface": "#343027",
+                    "surface-container-lowest": "#110e07",
+                    "on-tertiary-fixed": "#1b1c1a",
+                    "surface-tint": "#e9c349",
+                    "primary": "#f2ca50",
+                    "on-primary-fixed-variant": "#574500",
+                    "on-surface-variant": "#d0c5af",
+                    "surface-container": "#231f17",
+                    "charcoal": "#1A1A1A",
+                    "error": "#ffb4ab",
+                    "on-surface": "#eae1d4",
+                    "on-primary-container": "#554300",
+                    "tertiary": "#d0cecb",
+                    "primary-fixed": "#ffe088",
+                    "on-secondary": "#313030",
+                    "on-error-container": "#ffdad6",
+                    "obsidian": "#121212",
+                    "success": "#34C759",
+                    "inverse-surface": "#eae1d4",
+                    "tertiary-fixed-dim": "#c8c6c3",
+                    "secondary": "#c8c6c5",
+                    "soft-ivory": "#FDFBF7",
+                    "warm-amber": "#E5A93B",
+                    "on-secondary-fixed": "#1c1b1b",
+                    "tertiary-fixed": "#e4e2de",
+                    "surface": "#16130b",
+                    "secondary-fixed-dim": "#c8c6c5",
+                    "warning": "#FF9500",
+                    "brushed-gold": "#D4AF37",
+                    "surface-container-high": "#2d2a21",
+                    "on-tertiary-fixed-variant": "#474744",
+                    "outline": "#99907c",
+                    "background": "#16130b",
+                    "surface-dim": "#16130b",
+                    "on-secondary-fixed-variant": "#474646",
+                    "tertiary-container": "#b4b3af",
+                    "surface-bright": "#3d392f",
+                    "on-error": "#690005",
+                    "surface-container-highest": "#38342b",
+                    "on-background": "#eae1d4",
+                    "on-secondary-container": "#bab8b7",
+                    "surface-container-low": "#1f1b13",
+                    "on-tertiary": "#30312e"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "gutter": "24px",
+                    "container-max": "1280px",
+                    "unit": "4px",
+                    "section-gap": "120px",
+                    "margin-desktop": "64px"
+            },
+            "fontFamily": {
+                    "body-sm": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "headline-lg": ["Playfair Display"],
+                    "body-md": ["Inter"],
+                    "headline-xl": ["Playfair Display"],
+                    "label-lg": ["Inter"],
+                    "display-lg": ["Playfair Display"],
+                    "body-lg": ["Inter"],
+                    "display-lg-mobile": ["Playfair Display"],
+                    "headline-md": ["Playfair Display"]
+            },
+            "fontSize": {
+                    "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-xl": ["48px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "label-lg": ["14px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "display-lg-mobile": ["40px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #121212;
+            color: #eae1d4;
+            overflow-x: hidden;
+        }
+        .glass-card {
+            background: rgba(26, 26, 26, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            box-shadow: 0px 10px 40px rgba(212, 175, 55, 0.1);
+            position: relative;
+        }
+        /* Ticket Notches */
+        .glass-card::before, .glass-card::after {
+            content: '';
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            background: #121212;
+            border-radius: 50%;
+            top: 70%;
+            z-index: 10;
+        }
+        .glass-card::before { left: -16px; transform: translateY(-50%); border-right: 1px solid rgba(212, 175, 55, 0.2); }
+        .glass-card::after { right: -16px; transform: translateY(-50%); border-left: 1px solid rgba(212, 175, 55, 0.2); }
+
+        .ticket-divider {
+            border-top: 1px dashed rgba(212, 175, 55, 0.3);
+            position: absolute;
+            top: 70%;
+            left: 16px;
+            right: 16px;
+            transform: translateY(-50%);
+        }
+
+        .amber-glow {
+            box-shadow: 0px 0px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .gold-gradient {
+            background: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%);
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col items-center justify-center">
+<!-- TopNavBar Placeholder Logic (Suppressed for focused confirmation page) -->
+<main class="w-full flex-grow flex items-center justify-center px-margin-mobile py-section-gap relative overflow-hidden">
+<!-- Subtle Ambient Background Light -->
+<div class="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-warm-amber/10 blur-[150px] rounded-full pointer-events-none"></div>
+<div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-brushed-gold/5 blur-[120px] rounded-full pointer-events-none"></div>
+<!-- Confirmation Content -->
+<div class="max-w-[500px] w-full flex flex-col items-center animate-in fade-in slide-in-from-bottom-4 duration-1000">
+<!-- Branding Anchor (Top of Ticket) -->
+<div class="mb-8 text-center">
+<h1 class="font-headline-md text-headline-md font-bold text-primary tracking-widest uppercase mb-2">AETHER</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Exclusive Reservations</p>
+</div>
+<!-- Ticket Component -->
+<div class="glass-card w-full rounded-xl overflow-visible p-8 md:p-10 flex flex-col items-center relative">
+<!-- Ticket Notches Helper -->
+<div class="ticket-divider"></div>
+<!-- Success Header -->
+<div class="flex flex-col items-center mb-8">
+<div class="w-16 h-16 rounded-full border border-brushed-gold flex items-center justify-center amber-glow mb-4">
+<span class="material-symbols-outlined text-primary text-4xl">check_circle</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-1">Your Table is Held</h2>
+<p class="font-body-md text-body-md text-on-surface-variant text-center">Confirmation secured for your arrival</p>
+</div>
+<!-- Reservation Code Section -->
+<div class="w-full bg-black/40 border border-primary/20 rounded-lg p-6 mb-8 flex flex-col items-center group cursor-pointer active:scale-[0.98] transition-transform" onclick="copyCode()">
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-tighter mb-2">Reservation Code</span>
+<div class="flex items-center gap-3">
+<span class="font-mono text-3xl font-bold text-primary tracking-[0.2em]" id="res-code">TABLE-R07</span>
+<span class="material-symbols-outlined text-primary/60 group-hover:text-primary transition-colors" data-icon="content_copy">content_copy</span>
+</div>
+</div>
+<!-- Reservation Grid Details -->
+<div class="w-full grid grid-cols-2 gap-y-8 gap-x-4 mb-20">
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase block mb-1">Occasion</span>
+<span class="font-label-lg text-label-lg text-on-surface">Special Occasion</span>
+</div>
+<div class="text-right">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase block mb-1">Section</span>
+<span class="font-label-lg text-label-lg text-on-surface">Special Section</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase block mb-1">Date</span>
+<span class="font-label-lg text-label-lg text-on-surface">June 14, 2026</span>
+</div>
+<div class="text-right">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase block mb-1">Time</span>
+<span class="font-label-lg text-label-lg text-on-surface">7:00 PM IST</span>
+</div>
+</div>
+<!-- Lower Ticket Section (Below the Notch/Divider) -->
+<div class="w-full pt-4">
+<p class="font-body-sm text-body-sm text-on-surface-variant italic text-center mb-0 opacity-80">
+                        Show this code to the host upon arrival at the grand entrance.
+                    </p>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="w-full flex flex-col gap-4 mt-10">
+<button class="w-full py-4 rounded-xl border border-brushed-gold text-primary font-label-lg text-label-lg uppercase tracking-widest hover:bg-primary/10 transition-all active:scale-95 amber-glow flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-xl">calendar_add_on</span>
+                    Add to Google Calendar
+                </button>
+<button class="w-full py-4 rounded-xl text-on-surface-variant font-label-lg text-label-lg uppercase tracking-widest hover:text-on-surface transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-xl">arrow_back</span>
+                    Return to Website
+                </button>
+</div>
+</div>
+</main>
+<!-- Footer Component -->
+<footer class="w-full py-section-gap border-t border-primary/10 flex flex-col items-center gap-gutter max-w-container-max mx-auto px-margin-desktop mt-auto">
+<h2 class="font-headline-lg text-headline-lg text-primary tracking-widest">AETHER</h2>
+<div class="flex flex-wrap justify-center gap-8">
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Privacy Policy</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Terms of Service</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Press Kit</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Contact</a>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant tracking-widest opacity-60">© 2024 AETHER HOSPITALITY GROUP. ALL RIGHTS RESERVED.</p>
+</footer>
+<!-- Background Atmospheric Effect -->
+<div class="fixed inset-0 pointer-events-none -z-10 opacity-30">
+<img class="w-full h-full object-cover grayscale brightness-[0.2]" data-alt="An ultra-luxury cocktail lounge with dimly lit obsidian walls, brushed gold accents, and elegant smoke patterns swirling in the air. The atmosphere is sophisticated, moody, and exclusive, featuring refined glassware and textured stone surfaces under soft, warm directional lighting. The color palette is dominated by deep blacks and rich golden ambers." src="https://lh3.googleusercontent.com/aida-public/AB6AXuATzrvwSLTwzUy0_6Lcvwt7JMSo3tYFeOs5tqMS-SJdjbg8QZfnJClnoyKiPTPrMrBi_iAMJ2EyxMqb6dCSNCwnNjXQ1SXjIbGN4VYeHXRwXctz5XZg7CavQ6-h8aCYheqoCrZcGKGFu0l9ecNFq-0T-O-HaeSI03OvIZoNRLGjLRIz5TmRQvGoPPVocAYtmOtXK8N3z4Y28Wt2WgfdrYJg3V7qvuvnePSAu3vgtN7HY3e7MgcDNnq6Qn-6miOubJx8OEtSBXy0Og"/>
+</div>
+<script>
+        function copyCode() {
+            const code = document.getElementById('res-code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                const toast = document.createElement('div');
+                toast.className = 'fixed bottom-10 bg-surface-container-high border border-brushed-gold text-primary px-6 py-3 rounded-full font-label-lg shadow-2xl animate-bounce';
+                toast.innerText = 'Code copied to clipboard';
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 2000);
+            });
+        }
+    </script>
+</body></html>

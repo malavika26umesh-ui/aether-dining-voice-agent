@@ -1,0 +1,100 @@
+{
+  "2026-06-14": {
+    "Standard Dining": ["12:00", "13:30", "19:00", "20:30"],
+    "Large Group (6+)": ["19:00"],
+    "Outdoor/Patio": ["13:00", "19:30"],
+    "Special Occasion/Anniversary": ["19:00", "20:30"],
+    "Bar/Lounge": ["18:00", "19:30", "21:00"]
+  },
+  "2026-06-15": {
+    "Standard Dining": ["12:30", "14:00", "19:30", "21:00"],
+    "Large Group (6+)": ["20:00"],
+    "Outdoor/Patio": ["19:00", "20:30"],
+    "Special Occasion/Anniversary": ["19:30", "21:00"],
+    "Bar/Lounge": ["18:30", "20:00", "21:30"]
+  },
+  "2026-06-16": {
+    "Standard Dining": ["19:00", "20:30"],
+    "Large Group (6+)": [],
+    "Outdoor/Patio": [],
+    "Special Occasion/Anniversary": ["19:00"],
+    "Bar/Lounge": ["18:00", "21:00"]
+  },
+  "2026-06-17": {
+    "Standard Dining": ["12:00", "13:30"],
+    "Large Group (6+)": ["13:00"],
+    "Outdoor/Patio": ["13:00", "19:30"],
+    "Special Occasion/Anniversary": [],
+    "Bar/Lounge": []
+  },
+  "2026-06-18": {
+    "Standard Dining": ["12:00", "13:30", "19:00", "20:30"],
+    "Large Group (6+)": ["19:00"],
+    "Outdoor/Patio": ["13:00", "19:30"],
+    "Special Occasion/Anniversary": ["19:00", "20:30"],
+    "Bar/Lounge": ["18:00", "19:30", "21:00"]
+  },
+  "2026-06-19": {
+    "Standard Dining": [],
+    "Large Group (6+)": [],
+    "Outdoor/Patio": [],
+    "Special Occasion/Anniversary": [],
+    "Bar/Lounge": []
+  },
+  "2026-06-20": {
+    "Standard Dining": ["12:00", "13:30", "19:00", "20:30"],
+    "Large Group (6+)": ["19:00"],
+    "Outdoor/Patio": ["13:00", "19:30"],
+    "Special Occasion/Anniversary": ["19:00", "20:30"],
+    "Bar/Lounge": ["18:00", "19:30", "21:00"]
+  },
+  "2026-06-21": {
+    "Standard Dining": ["12:30", "14:00", "19:30", "21:00"],
+    "Large Group (6+)": ["20:00"],
+    "Outdoor/Patio": ["19:00", "20:30"],
+    "Special Occasion/Anniversary": ["19:30", "21:00"],
+    "Bar/Lounge": ["18:30", "20:00", "21:30"]
+  },
+  "2026-06-22": {
+    "Standard Dining": ["19:00", "20:30"],
+    "Large Group (6+)": ["19:30"],
+    "Outdoor/Patio": [],
+    "Special Occasion/Anniversary": ["20:00"],
+    "Bar/Lounge": ["19:00", "21:00"]
+  },
+  "2026-06-23": {
+    "Standard Dining": ["12:00", "13:00", "14:00"],
+    "Large Group (6+)": [],
+    "Outdoor/Patio": ["12:00", "13:00"],
+    "Special Occasion/Anniversary": ["13:00"],
+    "Bar/Lounge": ["18:00", "19:00"]
+  },
+  "2026-06-24": {
+    "Standard Dining": ["19:00", "19:30", "20:00", "20:30"],
+    "Large Group (6+)": ["19:00", "20:00"],
+    "Outdoor/Patio": ["19:00", "20:00"],
+    "Special Occasion/Anniversary": ["19:00", "20:00"],
+    "Bar/Lounge": ["19:00", "20:00", "21:00"]
+  },
+  "2026-06-25": {
+    "Standard Dining": ["18:00"],
+    "Large Group (6+)": [],
+    "Outdoor/Patio": ["18:00"],
+    "Special Occasion/Anniversary": [],
+    "Bar/Lounge": []
+  },
+  "2026-06-26": {
+    "Standard Dining": [],
+    "Large Group (6+)": [],
+    "Outdoor/Patio": [],
+    "Special Occasion/Anniversary": [],
+    "Bar/Lounge": []
+  },
+  "2026-06-27": {
+    "Standard Dining": ["12:00", "13:30", "19:00", "20:30"],
+    "Large Group (6+)": ["19:00"],
+    "Outdoor/Patio": ["13:00", "19:30"],
+    "Special Occasion/Anniversary": ["19:00", "20:30"],
+    "Bar/Lounge": ["18:00", "19:30", "21:00"]
+  }
+}

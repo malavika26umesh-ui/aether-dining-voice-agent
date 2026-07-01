@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AETHER | Artisanal Dining Experience</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed-dim": "#e9c349",
+                    "surface-variant": "#38342b",
+                    "danger": "#FF3B30",
+                    "on-primary-fixed": "#241a00",
+                    "inverse-primary": "#735c00",
+                    "secondary-container": "#4a4949",
+                    "on-tertiary-container": "#454543",
+                    "outline-variant": "#4d4635",
+                    "primary-container": "#d4af37",
+                    "error-container": "#93000a",
+                    "secondary-fixed": "#e5e2e1",
+                    "on-primary": "#3c2f00",
+                    "inverse-on-surface": "#343027",
+                    "surface-container-lowest": "#110e07",
+                    "on-tertiary-fixed": "#1b1c1a",
+                    "surface-tint": "#e9c349",
+                    "primary": "#f2ca50",
+                    "on-primary-fixed-variant": "#574500",
+                    "on-surface-variant": "#d0c5af",
+                    "surface-container": "#231f17",
+                    "charcoal": "#1A1A1A",
+                    "error": "#ffb4ab",
+                    "on-surface": "#eae1d4",
+                    "on-primary-container": "#554300",
+                    "tertiary": "#d0cecb",
+                    "primary-fixed": "#ffe088",
+                    "on-secondary": "#313030",
+                    "on-error-container": "#ffdad6",
+                    "obsidian": "#121212",
+                    "success": "#34C759",
+                    "inverse-surface": "#eae1d4",
+                    "tertiary-fixed-dim": "#c8c6c3",
+                    "secondary": "#c8c6c5",
+                    "soft-ivory": "#FDFBF7",
+                    "warm-amber": "#E5A93B",
+                    "on-secondary-fixed": "#1c1b1b",
+                    "tertiary-fixed": "#e4e2de",
+                    "surface": "#16130b",
+                    "secondary-fixed-dim": "#c8c6c5",
+                    "warning": "#FF9500",
+                    "brushed-gold": "#D4AF37",
+                    "surface-container-high": "#2d2a21",
+                    "on-tertiary-fixed-variant": "#474744",
+                    "outline": "#99907c",
+                    "background": "#16130b",
+                    "surface-dim": "#16130b",
+                    "on-secondary-fixed-variant": "#474646",
+                    "tertiary-container": "#b4b3af",
+                    "surface-bright": "#3d392f",
+                    "on-error": "#690005",
+                    "surface-container-highest": "#38342b",
+                    "on-background": "#eae1d4",
+                    "on-secondary-container": "#bab8b7",
+                    "surface-container-low": "#1f1b13",
+                    "on-tertiary": "#30312e"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "gutter": "24px",
+                    "container-max": "1280px",
+                    "unit": "4px",
+                    "section-gap": "120px",
+                    "margin-desktop": "64px"
+            },
+            "fontFamily": {
+                    "body-sm": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "headline-lg": ["Playfair Display"],
+                    "body-md": ["Inter"],
+                    "headline-xl": ["Playfair Display"],
+                    "label-lg": ["Inter"],
+                    "display-lg": ["Playfair Display"],
+                    "body-lg": ["Inter"],
+                    "display-lg-mobile": ["Playfair Display"],
+                    "headline-md": ["Playfair Display"]
+            },
+            "fontSize": {
+                    "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-xl": ["48px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "label-lg": ["14px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "display-lg-mobile": ["40px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(26, 26, 26, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        .amber-glow {
+            box-shadow: 0px 10px 30px rgba(212, 175, 55, 0.1);
+        }
+        .amber-glow-hover:hover {
+            box-shadow: 0px 15px 40px rgba(212, 175, 55, 0.2);
+        }
+        .audio-wave span {
+            display: inline-block;
+            width: 3px;
+            height: 20px;
+            background: #D4AF37;
+            margin: 0 2px;
+            border-radius: 10px;
+            animation: wave 1s ease-in-out infinite;
+        }
+        @keyframes wave {
+            0%, 100% { height: 8px; }
+            50% { height: 28px; }
+        }
+        .wave-1 { animation-delay: 0.1s !important; }
+        .wave-2 { animation-delay: 0.2s !important; }
+        .wave-3 { animation-delay: 0.3s !important; }
+        .wave-4 { animation-delay: 0.4s !important; }
+        .wave-5 { animation-delay: 0.5s !important; }
+    </style>
+</head>
+<body class="bg-obsidian text-soft-ivory selection:bg-brushed-gold/30">
+<!-- Top Navigation Bar -->
+<nav class="fixed top-0 w-full z-50 bg-charcoal/75 backdrop-blur-xl border-b border-primary/20 shadow-[0px_10px_30px_rgba(212,175,55,0.1)]">
+<div class="flex justify-between items-center px-margin-desktop py-6 w-full max-w-container-max mx-auto">
+<div class="font-headline-md text-headline-md font-bold text-primary tracking-widest cursor-pointer active:scale-95 transition-transform">
+                AETHER
+            </div>
+<div class="hidden md:flex gap-10 items-center">
+<a class="font-label-lg text-label-lg text-on-surface-variant hover:text-warm-amber transition-colors duration-300" href="#">Experience</a>
+<a class="font-label-lg text-label-lg text-on-surface-variant hover:text-warm-amber transition-colors duration-300" href="#">Menu</a>
+<a class="font-label-lg text-label-lg text-on-surface-variant hover:text-warm-amber transition-colors duration-300" href="#">Reservations</a>
+<a class="font-label-lg text-label-lg text-on-surface-variant hover:text-warm-amber transition-colors duration-300" href="#">Private Dining</a>
+</div>
+<button class="px-6 py-2.5 border border-brushed-gold text-brushed-gold font-label-lg text-label-lg rounded-lg hover:bg-brushed-gold hover:text-obsidian transition-all duration-300 amber-glow-hover active:scale-95">
+                Book a Table
+            </button>
+</div>
+</nav>
+<main>
+<!-- Hero Section -->
+<section class="relative h-screen flex items-center justify-center overflow-hidden">
+<div class="absolute inset-0 z-0">
+<div class="absolute inset-0 bg-gradient-to-b from-obsidian/60 via-obsidian/40 to-obsidian z-10"></div>
+<img class="w-full h-full object-cover" data-alt="A moody, high-end restaurant interior captured in low light. Flickering candles illuminate pristine white tablecloths and crystal glassware, creating long shadows and golden highlights. The atmosphere is quiet, intimate, and deeply luxurious with a dark obsidian color palette and brushed gold accents reflecting off metallic details. Professional architectural photography style with shallow depth of field." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDl5JsRq-7mzkJNJXh6PK0Wbl6eoXBLYicW-AhDLim50HJC49NFx6JJdwj95IwhZbbSTPhPSrJG_RdTWSVfhrqypBpVjZOKPTluh-bCpzsyznpp23uwnyW-ytDhBpIKvLM6wKvcGCu__G0OfMpD2mEJn_4Ude-xJOhHC-u-9QhR1Uuoo1QcO7nvfZm9NjqBBpx6j0vTvZb9AwnEHg5Cz0qvjRNyXKFFccsRLVtbBlvbkU7QYXjQ7IGeo_pQaOyP8GQ3iJqfRjDfig"/>
+</div>
+<div class="relative z-20 text-center px-margin-mobile max-w-4xl mx-auto space-y-8">
+<span class="block font-label-lg text-label-lg text-brushed-gold tracking-[0.3em] uppercase opacity-0 translate-y-4 animate-[fadeIn_0.8s_ease-out_forwards]">Est. 2024</span>
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-soft-ivory leading-tight opacity-0 translate-y-8 animate-[fadeIn_1s_ease-out_0.3s_forwards]">
+                    Artisanal Cuisine,<br/>
+<span class="italic font-normal">Crafted for the Senses</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto opacity-0 translate-y-8 animate-[fadeIn_1s_ease-out_0.6s_forwards]">
+                    An immersive journey through seasonal ingredients and avant-garde technique. Rediscover the ritual of dining in an atmosphere of obsidian elegance.
+                </p>
+<div class="pt-8 opacity-0 translate-y-8 animate-[fadeIn_1s_ease-out_0.9s_forwards]">
+<button class="px-10 py-5 bg-gradient-to-r from-brushed-gold to-warm-amber text-obsidian font-bold rounded-lg font-label-lg text-label-lg hover:scale-105 transition-all duration-500 amber-glow shadow-xl">
+                        Explore the Menu
+                    </button>
+</div>
+</div>
+</section>
+<!-- Signature Experience Grid -->
+<section class="py-section-gap px-margin-desktop max-w-container-max mx-auto">
+<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+<div class="max-w-xl">
+<h2 class="font-headline-xl text-headline-xl text-soft-ivory mb-4">A Symphony of Flavors</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Every dish is a canvas, every meal a performance. We curate fleeting moments into lasting memories.</p>
+</div>
+<div class="flex gap-4">
+<button class="w-12 h-12 rounded-full border border-primary/20 flex items-center justify-center hover:border-primary transition-colors text-primary">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<button class="w-12 h-12 rounded-full border border-primary/20 flex items-center justify-center hover:border-primary transition-colors text-primary">
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Bento Card 1 -->
+<div class="md:col-span-2 group relative h-[500px] rounded-xl overflow-hidden glass-panel p-8 flex flex-col justify-end">
+<img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-60" data-alt="Close up of an exquisitely plated fine dining course featuring molecular gastronomy elements. A vibrant reduction is swirled around a center protein, accented with edible micro-greens and gold leaf. The background is a dark, textured charcoal plate, highlighting the luxury artisanal presentation. Soft warm lighting creates a high-end editorial feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4H-DKxLjrHmkiGnImVXeA-BtgW83PocssPa7ImHTUvsuNg5ISxd2hBNZxnmFtL9Nvru9iBUJ-vZcGfrz2PLENpOJ_M4yPznFvsfGIbszMH6g3tPk4euG38G4EWjQaiEPjAlvUpLGEMJ-61zjxOgbB_Bt8SbLezd3GDsvpoak-CGEqgdd2IVxaaeua_EA0epmGOwuLhEEdcxyKzaE4Ckb0LeppIwILnAq6WFl1_elFjWHFmU65DSgZdW-ZzNv5YQIDHOfFw5Fjiw"/>
+<div class="absolute inset-0 bg-gradient-to-t from-obsidian via-transparent to-transparent"></div>
+<div class="relative z-10">
+<span class="font-label-sm text-label-sm text-brushed-gold mb-2 block">The Tasting Menu</span>
+<h3 class="font-headline-lg text-headline-lg text-soft-ivory mb-4">Odyssey of Taste</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md">An 11-course exploration of the earth, sea, and imagination.</p>
+</div>
+</div>
+<!-- Bento Card 2 -->
+<div class="group relative h-[500px] rounded-xl overflow-hidden glass-panel p-8 flex flex-col justify-end">
+<img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-50" data-alt="A sophisticated cocktail being prepared in a crystal glass. A plume of aromatic smoke is caught under a glass cloche, with amber-colored liquid and large clear ice cubes. The bar counter is a dark polished stone reflecting the warm golden light. Minimalist high-end bar atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUtvvx_u38HuuM3oIUSYvefZSIK0PlELMuCoQphfHXfzpNbdpdszdSunAgvemEaILbCORhjvi6m1tMVpJF8s8PwwbJy1iea4UEjPRSZdJ4MCLo5wiyaFQEhb3PeH7mNAOJ6-mY6N7TLwgjs7NUpck5M5ry2nCVQZD0qqdNVNnEgNTSrrv1Nxem_FY6ewLcGaSQG_B2HwHwYaHt1LzW6LuVkS0q342JoyiUos_bur-ROKlfVOBleXrO_DkQd1HbjcNNS_qvuVe1Eg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-obsidian via-transparent to-transparent"></div>
+<div class="relative z-10">
+<span class="font-label-sm text-label-sm text-brushed-gold mb-2 block">The Cellar</span>
+<h3 class="font-headline-lg text-headline-lg text-soft-ivory mb-4">Vintages &amp; Spirits</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Rare finds from the world's most prestigious vineyards.</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Voice Agent Widget -->
+<div class="fixed bottom-8 right-8 z-[100] flex flex-col items-end gap-4" id="voice-widget-container">
+<!-- Chat Card -->
+<div class="hidden w-[360px] h-[600px] glass-panel rounded-xl flex flex-col overflow-hidden shadow-2xl transition-all duration-500 origin-bottom-right scale-95 opacity-0" id="voice-card">
+<!-- Header -->
+<div class="p-6 border-b border-primary/20 flex justify-between items-center bg-charcoal/50">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-success animate-pulse"></div>
+<span class="font-label-lg text-label-lg text-brushed-gold uppercase">TableVoice Assistant</span>
+</div>
+<button class="text-on-surface-variant hover:text-soft-ivory transition-colors" onclick="toggleVoiceWidget()">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<!-- Chat Content -->
+<div class="flex-1 p-6 flex flex-col justify-center items-center text-center space-y-8 overflow-y-auto">
+<div class="audio-wave flex items-end justify-center h-12">
+<span class="wave-1"></span>
+<span class="wave-2"></span>
+<span class="wave-3"></span>
+<span class="wave-4"></span>
+<span class="wave-5"></span>
+<span class="wave-1"></span>
+<span class="wave-2"></span>
+</div>
+<div class="space-y-2">
+<p class="font-body-md text-body-md text-brushed-gold">Listening... Speak now</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant opacity-60">Try saying "Table for four at 8 PM"</p>
+</div>
+<!-- Transcript -->
+<div class="w-full space-y-4 pt-4">
+<div class="bg-primary/10 border border-primary/10 p-4 rounded-lg text-left self-end ml-8">
+<p class="font-label-sm text-label-sm text-primary mb-1">User</p>
+<p class="font-body-md text-body-md text-soft-ivory italic">"I'd like a table for two this Saturday"</p>
+</div>
+<div class="bg-charcoal p-4 rounded-lg text-left mr-8 border border-white/5">
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Aether</p>
+<p class="font-body-md text-body-md text-soft-ivory">Looking for Saturday evening. Would 7:30 PM or 8:15 PM work better for you?</p>
+</div>
+</div>
+</div>
+<!-- Footer / Input Fallback -->
+<div class="p-6 bg-obsidian/50 border-t border-primary/10">
+<div class="relative">
+<input class="w-full bg-charcoal/50 border-0 border-b border-primary/40 focus:ring-0 focus:border-primary text-soft-ivory placeholder:text-on-surface-variant/40 py-3 pr-10 font-body-sm text-body-sm" placeholder="Type your request..." type="text"/>
+<button class="absolute right-0 top-1/2 -translate-y-1/2 text-brushed-gold">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Floating Button -->
+<div class="relative group">
+<!-- Tooltip -->
+<div class="absolute right-full mr-4 top-1/2 -translate-y-1/2 glass-panel px-4 py-2 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+<span class="font-label-sm text-label-sm text-brushed-gold">Reserve with Voice (No Forms)</span>
+</div>
+<button class="w-16 h-16 rounded-full bg-gradient-to-tr from-brushed-gold to-warm-amber flex items-center justify-center text-obsidian shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 amber-glow" id="voice-fab" onclick="toggleVoiceWidget()">
+<span class="material-symbols-outlined text-3xl" id="voice-icon">mic</span>
+</button>
+</div>
+</div>
+<!-- Footer -->
+<footer class="w-full py-section-gap bg-surface-container-lowest border-t border-primary/10 mt-section-gap">
+<div class="flex flex-col items-center gap-gutter w-full max-w-container-max mx-auto px-margin-desktop">
+<div class="font-headline-lg text-headline-lg text-primary tracking-widest mb-4">AETHER</div>
+<div class="flex flex-wrap justify-center gap-10">
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Privacy Policy</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Terms of Service</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Press Kit</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Contact</a>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant opacity-40 mt-8">© 2024 AETHER HOSPITALITY GROUP. ALL RIGHTS RESERVED.</p>
+</div>
+</footer>
+<script>
+        function toggleVoiceWidget() {
+            const card = document.getElementById('voice-card');
+            const icon = document.getElementById('voice-icon');
+            const isHidden = card.classList.contains('hidden');
+
+            if (isHidden) {
+                card.classList.remove('hidden');
+                // Force reflow
+                card.offsetHeight;
+                card.classList.add('scale-100', 'opacity-100');
+                card.classList.remove('scale-95', 'opacity-0');
+                icon.innerText = 'close';
+            } else {
+                card.classList.remove('scale-100', 'opacity-100');
+                card.classList.add('scale-95', 'opacity-0');
+                icon.innerText = 'mic';
+                setTimeout(() => {
+                    card.classList.add('hidden');
+                }, 500);
+            }
+        }
+
+        // Animation keyframes injected via JS for simplicity
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body></html>
