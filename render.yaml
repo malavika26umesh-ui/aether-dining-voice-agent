@@ -10,15 +10,15 @@ services:
     runtime: node
     plan: free               # $0; sleeps after 15 min idle — keep awake with an uptime pinger (see DEPLOY.md)
     region: singapore        # closest to Sarvam/India users; change if you prefer
-    buildCommand: npm ci && npm run build
-    startCommand: npm run start   # next start binds to $PORT automatically
+    # --include=dev forces devDependencies (tailwind/postcss/typescript) to install
+    # even though the service runs in production — they are required to build the CSS.
+    buildCommand: npm ci --include=dev && npm run build
+    startCommand: npm run start   # next start binds to $PORT and sets NODE_ENV=production itself
     healthCheckPath: /
     autoDeploy: true
     envVars:
       - key: NODE_VERSION
         value: "22"
-      - key: NODE_ENV
-        value: production
       # ---- Voice pipeline (required) ----
       - key: GROQ_API_KEY
         sync: false

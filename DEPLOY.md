@@ -13,9 +13,11 @@ app is deployed to **Render** as a single persistent Web Service. (Vercel is not
 ## 2. Create the service (Blueprint — easiest)
 1. Render Dashboard → **New → Blueprint**.
 2. Connect the GitHub repo. Render reads `render.yaml` and proposes the service.
-3. Click **Apply**. The first build runs `npm ci && npm run build`.
+3. Click **Apply**. The first build runs `npm ci --include=dev && npm run build`.
+   (`--include=dev` is required — Tailwind/PostCSS/TypeScript are devDependencies needed
+   to build the CSS, and would otherwise be skipped in a production install.)
 
-*(Manual alternative: New → Web Service → pick repo → Build `npm ci && npm run build`,
+*(Manual alternative: New → Web Service → pick repo → Build `npm ci --include=dev && npm run build`,
 Start `npm run start`, Runtime Node, add env vars from the list below.)*
 
 ## 3. Set environment variables
