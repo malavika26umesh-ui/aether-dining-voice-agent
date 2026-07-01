@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI, SchemaType } from '@google/generative-ai';
+import { groqChatJSON } from './groqChat';
 
 export interface SlotExtractionResult {
   occasion: string | null;
@@ -8,7 +8,7 @@ export interface SlotExtractionResult {
 }
 
 /**
- * Extracts slot values (occasion, date, time, partySize) from the user utterance using Gemini.
+ * Extracts slot values (occasion, date, time, partySize) from the user utterance using Groq.
  * Performs relative date parsing to absolute YYYY-MM-DD using the reference date.
  */
 export async function fillSlots(
@@ -16,40 +16,6 @@ export async function fillSlots(
   history: { role: 'user' | 'assistant'; content: string }[],
   referenceDateStr: string = '2026-06-14'
 ): Promise<SlotExtractionResult> {
-  const apiKey = process.env.GOOGLE_API_KEY;
-  if (!apiKey) {
-    throw new Error('GOOGLE_API_KEY is not defined in environment variables');
-  }
-
-  const genAI = new GoogleGenerativeAI(apiKey);
-  const model = genAI.getGenerativeModel({
-    model: 'gemini-2.5-flash',
-    // thinkingConfig is supported by the API but not yet in the SDK's TS types.
-    generationConfig: {
-      thinkingConfig: { thinkingBudget: 0 },
-      responseMimeType: 'application/json',
-      responseSchema: {
-        type: SchemaType.OBJECT,
-        properties: {
-          occasion: {
-            type: SchemaType.STRING,
-            enum: [
-              'Standard Dining',
-              'Large Group (6+)',
-              'Outdoor/Patio',
-              'Special Occasion/Anniversary',
-              'Bar/Lounge',
-            ],
-            nullable: true,
-          },
-          date: { type: SchemaType.STRING, nullable: true },
-          time: { type: SchemaType.STRING, nullable: true },
-          partySize: { type: SchemaType.INTEGER, nullable: true },
-        },
-      } as any,
-    } as any,
-  });
-
   const contextStr = history
     .slice(-4)
     .map((m) => `${m.role === 'assistant' ? 'Agent' : 'User'}: ${m.content}`)
@@ -59,7 +25,7 @@ export async function fillSlots(
   const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const refDayName = weekdays[refDate.getDay()];
 
-  const prompt = `You are a slot extraction assistant for "Aether Dining" table reservations.
+  const system = `You are a slot extraction assistant for "Aether Dining" table reservations.
 Analyze the user's latest utterance and the recent conversation history to extract booking details.
 
 Reference current date context:
@@ -85,18 +51,22 @@ Extraction Rules:
 
 If a slot is missing or not mentioned, return null for that field.
 
-Conversation Context:
+Respond ONLY with a JSON object of the exact shape:
+{"occasion": string|null, "date": "YYYY-MM-DD"|null, "time": "HH:MM"|null, "partySize": integer|null}`;
+
+  const user = `Conversation Context:
 ${contextStr}
 
-User's Latest Utterance: "${utterance}"
-
-Return JSON:`;
+User's Latest Utterance: "${utterance}"`;
 
   try {
-    const result = await model.generateContent(prompt);
-    const responseText = result.response.text().trim();
-    const parsed = JSON.parse(responseText) as SlotExtractionResult;
-    return parsed;
+    const parsed = await groqChatJSON<SlotExtractionResult>({ system, user });
+    return {
+      occasion: parsed.occasion ?? null,
+      date: parsed.date ?? null,
+      time: parsed.time ?? null,
+      partySize: parsed.partySize ?? null,
+    };
   } catch (error) {
     console.error('Error in slot filler:', error);
     return { occasion: null, date: null, time: null, partySize: null };

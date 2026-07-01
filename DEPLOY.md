@@ -25,9 +25,9 @@ In the service's **Environment** tab, add (values from your local `.env`):
 
 | Key | Notes |
 |---|---|
-| `GROQ_API_KEY` | Groq Whisper STT |
+| `GROQ_API_KEY` | Groq Whisper STT **+ dialogue LLM** (llama-3.3-70b) |
 | `SARVAM_API_KEY` | Sarvam TTS |
-| `GOOGLE_API_KEY` | Gemini dialogue |
+| `GOOGLE_API_KEY` | Gemini — STT fallback only (dialogue runs on Groq) |
 | `GOOGLE_SERVICE_ACCOUNT_JSON` | **base64 of the whole key file** (the long string in `.env`) |
 | `GOOGLE_SHEETS_ID` | spreadsheet ID |
 | `GOOGLE_CALENDAR_ID` | calendar ID |

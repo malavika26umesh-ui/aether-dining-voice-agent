@@ -24,7 +24,7 @@ services:
         sync: false
       - key: SARVAM_API_KEY
         sync: false
-      - key: GOOGLE_API_KEY          # Gemini dialogue
+      - key: GOOGLE_API_KEY          # Gemini — STT fallback only (dialogue runs on Groq)
         sync: false
       # ---- Persistence (required) ----
       - key: GOOGLE_SERVICE_ACCOUNT_JSON   # base64 of the full service-account key

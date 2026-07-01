@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { groqChat, groqChatJSON } from './groqChat';
 import { detectIntent } from './intentDetector';
 import { fillSlots } from './slotFiller';
 import { generateReservationCode } from './codeGenerator';
@@ -127,45 +127,30 @@ function extractCodeFromUtterance(utterance: string): string | null {
  */
 async function checkConfirmation(
   utterance: string,
-  history: { role: 'user' | 'assistant'; content: string }[],
-  apiKey: string
+  history: { role: 'user' | 'assistant'; content: string }[]
 ): Promise<boolean | null> {
   const text = utterance.trim().toLowerCase();
 
-  // Fast keyword path — no Gemini round-trip needed for clear affirmatives/negatives
+  // Fast keyword path — no LLM round-trip needed for clear affirmatives/negatives
   const YES = /\b(yes|yeah|yep|yup|sure|ok|okay|please|correct|confirm|go ahead|lock it in|do it|absolutely|definitely|great|perfect|sounds good|that works|let's do it|book it)\b/i;
   const NO  = /\b(no|nope|nah|cancel|stop|don't|change|different|wrong|incorrect|not that|wait|hold on)\b/i;
 
   if (YES.test(text) && !NO.test(text)) return true;
   if (NO.test(text) && !YES.test(text)) return false;
 
-  // Fallback to Gemini for ambiguous utterances
-  const genAI = new GoogleGenerativeAI(apiKey);
-  const model = genAI.getGenerativeModel({
-    model: 'gemini-2.5-flash-lite',
-    generationConfig: {
-      responseMimeType: 'application/json',
-      responseSchema: {
-        type: 'OBJECT' as any,
-        properties: { confirmed: { type: 'BOOLEAN' as any, nullable: true } },
-        required: ['confirmed'],
-      },
-    },
-  });
-
+  // Fallback to the LLM for ambiguous utterances
   const lastAgentMsg = history.filter((h) => h.role === 'assistant').slice(-1)[0]?.content || '';
-  const prompt = `The assistant asked: "${lastAgentMsg}"
-The user replied: "${utterance}"
-
-Did the user say yes, agree, confirm, or otherwise indicate they want to proceed?
-- If yes/agree/confirm/please → { "confirmed": true }
-- If no/cancel/change/disagree → { "confirmed": false }
-- If ambiguous/neutral → { "confirmed": null }`;
+  const system = `You classify whether a user's reply is an affirmative confirmation.
+Respond ONLY with JSON of the exact shape {"confirmed": true|false|null}:
+- yes/agree/confirm/please → {"confirmed": true}
+- no/cancel/change/disagree → {"confirmed": false}
+- ambiguous/neutral → {"confirmed": null}`;
+  const user = `The assistant asked: "${lastAgentMsg}"
+The user replied: "${utterance}"`;
 
   try {
-    const result = await model.generateContent(prompt);
-    const parsed = JSON.parse(result.response.text().trim());
-    // If Gemini is still uncertain, lean towards true when the text is short
+    const parsed = await groqChatJSON<{ confirmed: boolean | null }>({ system, user });
+    // If the model is still uncertain, lean towards true when the text is short
     // (single-word replies to a yes/no question are almost always affirmative)
     if (parsed.confirmed === null && text.split(' ').length <= 3) return true;
     return parsed.confirmed;
@@ -194,20 +179,7 @@ export async function processDialogueTurn(
   userInput: string,
   state: SessionState
 ): Promise<{ responseText: string; updatedState: SessionState }> {
-  const apiKey = process.env.GOOGLE_API_KEY;
-  if (!apiKey) throw new Error('GOOGLE_API_KEY is not defined in environment variables');
-
-  const genAI = new GoogleGenerativeAI(apiKey);
-  const responseModel = genAI.getGenerativeModel({
-    model: 'gemini-2.5-flash',
-    // Short conversational turns don't need the default "thinking" budget —
-    // disabling it cuts several seconds of latency per turn.
-    // thinkingConfig is supported by the API but not yet in the SDK's TS types.
-    generationConfig: {
-      thinkingConfig: { thinkingBudget: 0 },
-      maxOutputTokens: 300,
-    } as any,
-  });
+  if (!process.env.GROQ_API_KEY) throw new Error('GROQ_API_KEY is not defined in environment variables');
 
   const { currentDateIST, currentDayName } = getISTDate();
 
@@ -306,7 +278,7 @@ export async function processDialogueTurn(
 
   if (state.intent === 'book_new') {
     if (state.awaitingConfirmation) {
-      const isConfirmed = await checkConfirmation(userInput, state.conversationHistory, apiKey);
+      const isConfirmed = await checkConfirmation(userInput, state.conversationHistory);
       if (isConfirmed === true) {
         const code = generateReservationCode();
         state.reservationCode = code;
@@ -449,7 +421,7 @@ export async function processDialogueTurn(
       }
       // else: no code found in utterance yet — stay in collecting_code
     } else if (state.intentPhase === 'awaiting_cancel_confirm') {
-      const isConfirmed = await checkConfirmation(userInput, state.conversationHistory, apiKey);
+      const isConfirmed = await checkConfirmation(userInput, state.conversationHistory);
       if (isConfirmed === true) {
         // Perform cancel
         try {
@@ -523,7 +495,7 @@ export async function processDialogueTurn(
         state.intentPhase = 'awaiting_reschedule_confirm';
       }
     } else if (state.intentPhase === 'awaiting_reschedule_confirm') {
-      const isConfirmed = await checkConfirmation(userInput, state.conversationHistory, apiKey);
+      const isConfirmed = await checkConfirmation(userInput, state.conversationHistory);
       if (isConfirmed === true) {
         // Perform reschedule MCP calls
         try {
@@ -672,11 +644,16 @@ ${state.conversationHistory.slice(-6).map((h) => `${h.role === 'assistant' ? 'Ag
 
 Generate the next assistant turn response:`;
 
-  const result = await responseModel.generateContent({
-    contents: [{ role: 'user', parts: [{ text: contextPrompt }] }],
-  });
-
-  const responseText = result.response.text().trim();
+  const responseText = (
+    await groqChat({
+      system:
+        'You are the voice reservation assistant for Aether Dining. Follow the instructions in the user message precisely and reply with ONLY the assistant\'s next spoken turn (no JSON, no labels).',
+      user: contextPrompt,
+      json: false,
+      temperature: 0.7,
+      maxTokens: 300,
+    })
+  ).trim();
   state.conversationHistory.push({ role: 'assistant', content: responseText });
 
   // If a flow just completed this turn, the agent has now asked "anything else?"

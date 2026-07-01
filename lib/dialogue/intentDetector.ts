@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI, SchemaType } from '@google/generative-ai';
+import { groqChatJSON } from './groqChat';
 
 export type IntentType = 'unknown' | 'book_new' | 'reschedule' | 'cancel' | 'check_availability';
 
@@ -8,42 +8,18 @@ export interface IntentDetectionResult {
 }
 
 /**
- * Detects the user's intent from their latest utterance and context using Gemini.
+ * Detects the user's intent from their latest utterance and context using Groq.
  */
 export async function detectIntent(
   utterance: string,
   history: { role: 'user' | 'assistant'; content: string }[]
 ): Promise<IntentDetectionResult> {
-  const apiKey = process.env.GOOGLE_API_KEY;
-  if (!apiKey) {
-    throw new Error('GOOGLE_API_KEY is not defined in environment variables');
-  }
-
-  const genAI = new GoogleGenerativeAI(apiKey);
-  const model = genAI.getGenerativeModel({
-    model: 'gemini-2.5-flash-lite',
-    generationConfig: {
-      responseMimeType: 'application/json',
-      responseSchema: {
-        type: SchemaType.OBJECT,
-        properties: {
-          intent: {
-            type: SchemaType.STRING,
-            enum: ['unknown', 'book_new', 'reschedule', 'cancel', 'check_availability'],
-          },
-          confidence: { type: SchemaType.NUMBER },
-        },
-        required: ['intent', 'confidence'],
-      } as any,
-    },
-  });
-
   const contextStr = history
     .slice(-4)
     .map((m) => `${m.role === 'assistant' ? 'Agent' : 'User'}: ${m.content}`)
     .join('\n');
 
-  const prompt = `You are a conversation intent classifier for "Aether Dining" voice reservation assistant.
+  const system = `You are a conversation intent classifier for "Aether Dining" voice reservation assistant.
 Analyze the user's latest utterance and the recent conversation history to identify the primary intent:
 
 - 'book_new': user wants to make a new table reservation (e.g. "Reserve a table", "Book a table for Saturday", "We want to dine here").
@@ -52,17 +28,16 @@ Analyze the user's latest utterance and the recent conversation history to ident
 - 'check_availability': user is asking about availability, open timings, or if we have tables on a date without explicitly booking yet (e.g. "What timings are open on Friday?", "Do you have tables left?").
 - 'unknown': small talk, greetings, unrelated questions, or out-of-scope requests.
 
-Conversation Context:
+Respond ONLY with a JSON object of the exact shape:
+{"intent": one of "unknown"|"book_new"|"reschedule"|"cancel"|"check_availability", "confidence": number between 0 and 1}`;
+
+  const user = `Conversation Context:
 ${contextStr}
 
-User's Latest Utterance: "${utterance}"
-
-Return a JSON object with fields "intent" and "confidence".`;
+User's Latest Utterance: "${utterance}"`;
 
   try {
-    const result = await model.generateContent(prompt);
-    const responseText = result.response.text().trim();
-    const parsed = JSON.parse(responseText) as IntentDetectionResult;
+    const parsed = await groqChatJSON<IntentDetectionResult>({ system, user });
     return parsed;
   } catch (error) {
     console.error('Error detecting intent:', error);
