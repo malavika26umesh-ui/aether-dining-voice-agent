@@ -9,7 +9,8 @@
     "test": "jest",
     "test:server": "jest --selectProjects server",
     "test:client": "jest --selectProjects client",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "eval": "jest --config jest.evals.config.ts"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",

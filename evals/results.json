@@ -1,0 +1,406 @@
+{
+  "generatedAt": "2026-07-02T03:48:34.048Z",
+  "model": "groq/llama-3.3-70b-versatile",
+  "referenceDate": "2026-06-14",
+  "summary": {
+    "intentAccuracyPct": 100,
+    "intentCases": 16,
+    "intentNoisyAccuracyPct": 100,
+    "avgIntentConfidence": 0.91,
+    "slotExactMatchPct": 100,
+    "slotFieldAccuracyPct": {
+      "occasion": 100,
+      "date": 100,
+      "time": 100,
+      "partySize": 100
+    },
+    "latencyMs": {
+      "intent": {
+        "n": 16,
+        "mean": 321,
+        "p50": 278,
+        "p95": 675,
+        "min": 127,
+        "max": 675
+      },
+      "slot": {
+        "n": 10,
+        "mean": 474,
+        "p50": 438,
+        "p95": 1128,
+        "min": 196,
+        "max": 1128
+      },
+      "combined": {
+        "n": 26,
+        "mean": 380,
+        "p50": 315,
+        "p95": 675,
+        "min": 127,
+        "max": 1128
+      }
+    }
+  },
+  "intentDetails": [
+    {
+      "id": "int-01",
+      "expected": "book_new",
+      "got": "book_new",
+      "ok": true,
+      "ms": 455,
+      "noisy": false
+    },
+    {
+      "id": "int-02",
+      "expected": "book_new",
+      "got": "book_new",
+      "ok": true,
+      "ms": 478,
+      "noisy": false
+    },
+    {
+      "id": "int-03",
+      "expected": "book_new",
+      "got": "book_new",
+      "ok": true,
+      "ms": 278,
+      "noisy": false
+    },
+    {
+      "id": "int-04",
+      "expected": "book_new",
+      "got": "book_new",
+      "ok": true,
+      "ms": 453,
+      "noisy": false
+    },
+    {
+      "id": "int-05",
+      "expected": "reschedule",
+      "got": "reschedule",
+      "ok": true,
+      "ms": 675,
+      "noisy": false
+    },
+    {
+      "id": "int-06",
+      "expected": "reschedule",
+      "got": "reschedule",
+      "ok": true,
+      "ms": 265,
+      "noisy": false
+    },
+    {
+      "id": "int-07",
+      "expected": "cancel",
+      "got": "cancel",
+      "ok": true,
+      "ms": 544,
+      "noisy": false
+    },
+    {
+      "id": "int-08",
+      "expected": "cancel",
+      "got": "cancel",
+      "ok": true,
+      "ms": 281,
+      "noisy": false
+    },
+    {
+      "id": "int-09",
+      "expected": "check_availability",
+      "got": "check_availability",
+      "ok": true,
+      "ms": 159,
+      "noisy": false
+    },
+    {
+      "id": "int-10",
+      "expected": "check_availability",
+      "got": "check_availability",
+      "ok": true,
+      "ms": 285,
+      "noisy": false
+    },
+    {
+      "id": "int-11",
+      "expected": "unknown",
+      "got": "unknown",
+      "ok": true,
+      "ms": 480,
+      "noisy": false
+    },
+    {
+      "id": "int-12",
+      "expected": "unknown",
+      "got": "unknown",
+      "ok": true,
+      "ms": 170,
+      "noisy": false
+    },
+    {
+      "id": "int-13",
+      "expected": "book_new",
+      "got": "book_new",
+      "ok": true,
+      "ms": 127,
+      "noisy": false
+    },
+    {
+      "id": "int-14",
+      "expected": "book_new",
+      "got": "book_new",
+      "ok": true,
+      "ms": 133,
+      "noisy": true
+    },
+    {
+      "id": "int-15",
+      "expected": "cancel",
+      "got": "cancel",
+      "ok": true,
+      "ms": 128,
+      "noisy": true
+    },
+    {
+      "id": "int-16",
+      "expected": "check_availability",
+      "got": "check_availability",
+      "ok": true,
+      "ms": 223,
+      "noisy": true
+    }
+  ],
+  "slotDetails": [
+    {
+      "id": "slot-01",
+      "expected": {
+        "occasion": "Standard Dining",
+        "date": "2026-06-20",
+        "time": "19:00",
+        "partySize": 2
+      },
+      "got": {
+        "occasion": "Standard Dining",
+        "date": "2026-06-20",
+        "time": "19:00",
+        "partySize": 2
+      },
+      "grade": {
+        "occasion": true,
+        "date": true,
+        "time": true,
+        "partySize": true
+      },
+      "allCorrect": true,
+      "ms": 438
+    },
+    {
+      "id": "slot-02",
+      "expected": {
+        "occasion": "Outdoor/Patio",
+        "date": "2026-06-15",
+        "time": "13:30",
+        "partySize": 4
+      },
+      "got": {
+        "occasion": "Outdoor/Patio",
+        "date": "2026-06-15",
+        "time": "13:30",
+        "partySize": 4
+      },
+      "grade": {
+        "occasion": true,
+        "date": true,
+        "time": true,
+        "partySize": true
+      },
+      "allCorrect": true,
+      "ms": 663
+    },
+    {
+      "id": "slot-03",
+      "expected": {
+        "occasion": "Special Occasion/Anniversary",
+        "date": "2026-06-14",
+        "time": "20:00",
+        "partySize": 2
+      },
+      "got": {
+        "occasion": "Special Occasion/Anniversary",
+        "date": "2026-06-14",
+        "time": "20:00",
+        "partySize": 2
+      },
+      "grade": {
+        "occasion": true,
+        "date": true,
+        "time": true,
+        "partySize": true
+      },
+      "allCorrect": true,
+      "ms": 1128
+    },
+    {
+      "id": "slot-04",
+      "expected": {
+        "occasion": "Large Group (6+)",
+        "date": "2026-06-19",
+        "time": "19:30",
+        "partySize": 6
+      },
+      "got": {
+        "occasion": "Large Group (6+)",
+        "date": "2026-06-19",
+        "time": "19:30",
+        "partySize": 6
+      },
+      "grade": {
+        "occasion": true,
+        "date": true,
+        "time": true,
+        "partySize": true
+      },
+      "allCorrect": true,
+      "ms": 534
+    },
+    {
+      "id": "slot-05",
+      "expected": {
+        "occasion": "Bar/Lounge",
+        "date": "2026-06-15",
+        "time": "21:00",
+        "partySize": 2
+      },
+      "got": {
+        "occasion": "Bar/Lounge",
+        "date": "2026-06-15",
+        "time": "21:00",
+        "partySize": 2
+      },
+      "grade": {
+        "occasion": true,
+        "date": true,
+        "time": true,
+        "partySize": true
+      },
+      "allCorrect": true,
+      "ms": 315
+    },
+    {
+      "id": "slot-06",
+      "expected": {
+        "occasion": "Standard Dining",
+        "date": "2026-06-15",
+        "time": "19:00",
+        "partySize": 3
+      },
+      "got": {
+        "occasion": "Standard Dining",
+        "date": "2026-06-15",
+        "time": "19:00",
+        "partySize": 3
+      },
+      "grade": {
+        "occasion": true,
+        "date": true,
+        "time": true,
+        "partySize": true
+      },
+      "allCorrect": true,
+      "ms": 196
+    },
+    {
+      "id": "slot-07",
+      "expected": {
+        "occasion": "Standard Dining",
+        "date": "2026-06-20",
+        "time": null,
+        "partySize": 2
+      },
+      "got": {
+        "occasion": "Standard Dining",
+        "date": "2026-06-20",
+        "time": null,
+        "partySize": 2
+      },
+      "grade": {
+        "occasion": true,
+        "date": true,
+        "time": true,
+        "partySize": true
+      },
+      "allCorrect": true,
+      "ms": 204
+    },
+    {
+      "id": "slot-08",
+      "expected": {
+        "occasion": "Standard Dining",
+        "date": "2026-06-14",
+        "time": "18:30",
+        "partySize": 2
+      },
+      "got": {
+        "occasion": "Standard Dining",
+        "date": "2026-06-14",
+        "time": "18:30",
+        "partySize": 2
+      },
+      "grade": {
+        "occasion": true,
+        "date": true,
+        "time": true,
+        "partySize": true
+      },
+      "allCorrect": true,
+      "ms": 462
+    },
+    {
+      "id": "slot-09",
+      "expected": {
+        "occasion": "Standard Dining",
+        "date": "2026-06-15",
+        "time": "20:00",
+        "partySize": 5
+      },
+      "got": {
+        "occasion": "Standard Dining",
+        "date": "2026-06-15",
+        "time": "20:00",
+        "partySize": 5
+      },
+      "grade": {
+        "occasion": true,
+        "date": true,
+        "time": true,
+        "partySize": true
+      },
+      "allCorrect": true,
+      "ms": 353
+    },
+    {
+      "id": "slot-10",
+      "expected": {
+        "occasion": "Outdoor/Patio",
+        "date": "2026-06-20",
+        "time": "19:30",
+        "partySize": 4
+      },
+      "got": {
+        "occasion": "Outdoor/Patio",
+        "date": "2026-06-20",
+        "time": "19:30",
+        "partySize": 4
+      },
+      "grade": {
+        "occasion": true,
+        "date": true,
+        "time": true,
+        "partySize": true
+      },
+      "allCorrect": true,
+      "ms": 447
+    }
+  ]
+}
