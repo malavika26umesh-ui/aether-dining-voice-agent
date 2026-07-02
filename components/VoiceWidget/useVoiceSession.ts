@@ -47,6 +47,13 @@ function mseCanStream(): boolean {
   return typeof MediaSource !== 'undefined' && MediaSource.isTypeSupported('audio/mpeg');
 }
 
+// Tiny silent WAV. iOS Safari only lets an <audio> element play programmatically
+// (i.e. not inside a tap) once it has been "unlocked" by a play() call that DID
+// originate from a user gesture. We play this muted during the Start tap so the
+// element is primed for the real TTS that arrives later over the WebSocket.
+const SILENT_WAV =
+  'data:audio/wav;base64,UklGRjIAAABXQVZFZm10IBAAAAABAAEAgD4AAAB9AAACABAAZGF0YQoAAAAAAAAAAAAAAAAAAAAAAAA=';
+
 export function useVoiceSession({
   onTranscript,
   onLlmResponse,
@@ -75,7 +82,8 @@ export function useVoiceSession({
 
   // TTS playback
   const chunksRef        = useRef<Uint8Array[]>([]);   // blob fallback buffer
-  const audioElRef       = useRef<HTMLAudioElement | null>(null);
+  const audioElRef       = useRef<HTMLAudioElement | null>(null);  // persistent, iOS-unlocked
+  const primedRef        = useRef(false);              // el unlocked in a user gesture
   const blobUrlRef       = useRef<string | null>(null);
 
   // TTS streaming (MediaSource) — play the first chunk as it arrives instead of
@@ -132,6 +140,14 @@ export function useVoiceSession({
     stopRecorder();
     stopBargeInRecorder();
     stopAudio();
+    // Fully release the persistent audio element on teardown (stopAudio keeps it
+    // alive for reuse across turns; here the whole session is ending).
+    if (audioElRef.current) {
+      const el = audioElRef.current;
+      try { el.pause(); el.removeAttribute('src'); el.load(); } catch { /* noop */ }
+      audioElRef.current = null;
+    }
+    primedRef.current = false;
     wsRef.current?.close();
     wsRef.current = null;
     if (audioCtxRef.current?.state !== 'closed') audioCtxRef.current?.close().catch(() => {});
@@ -160,10 +176,43 @@ export function useVoiceSession({
       el.onended = null; el.onerror = null;   // prevent stray finishStream on teardown
       el.pause();
       try { el.removeAttribute('src'); el.load(); } catch { /* noop */ }
-      audioElRef.current = null;
+      // NOTE: keep audioElRef.current alive. Nulling it would force a new
+      // (iOS-locked) element next turn; reusing the primed one keeps playback
+      // working on mobile Safari. It's fully released in doCleanup().
     }
     if (blobUrlRef.current) { URL.revokeObjectURL(blobUrlRef.current); blobUrlRef.current = null; }
   }, []);
+
+  // Return the single persistent audio element, creating it once.
+  const ensureAudioEl = useCallback((): HTMLAudioElement => {
+    let el = audioElRef.current;
+    if (!el) {
+      el = new Audio();
+      el.setAttribute('playsinline', '');   // iOS: don't hijack into fullscreen
+      el.preload = 'auto';
+      audioElRef.current = el;
+    }
+    return el;
+  }, []);
+
+  // Unlock the audio element from within a user gesture (the Start tap). Plays a
+  // muted silent clip so later programmatic play() calls are allowed on iOS.
+  const primeAudioEl = useCallback(() => {
+    if (primedRef.current) return;
+    const el = ensureAudioEl();
+    try {
+      el.muted = true;
+      el.src = SILENT_WAV;
+      const settle = () => {
+        try { el.pause(); el.currentTime = 0; } catch { /* noop */ }
+        el.muted = false;
+        primedRef.current = true;
+      };
+      const p = el.play();
+      if (p && typeof p.then === 'function') p.then(settle).catch(() => { el.muted = false; });
+      else settle();
+    } catch { el.muted = false; }
+  }, [ensureAudioEl]);
 
   // Executes the pending server-driven close (navigate to confirmation, or just
   // end). Returns true if a close was pending and handled. Idempotent.
@@ -246,9 +295,8 @@ export function useVoiceSession({
     mediaSourceRef.current = ms;
     const url = URL.createObjectURL(ms);
     blobUrlRef.current = url;
-    const el  = new Audio();
+    const el  = ensureAudioEl();   // reuse the iOS-unlocked element
     el.src = url;
-    audioElRef.current = el;
 
     el.onended = finishStream;
     el.onerror = () => { console.warn('TTS stream error'); finishStream(); };
@@ -262,7 +310,7 @@ export function useVoiceSession({
         pumpMse();
       } catch (e) { console.warn('addSourceBuffer failed', e); finishStream(); }
     }, { once: true });
-  }, [stopAudio, finishStream, pumpMse]);
+  }, [stopAudio, finishStream, pumpMse, ensureAudioEl]);
 
   const appendMseChunk = useCallback((bytes: Uint8Array) => {
     // Copy into a standalone buffer (the decoded view may be reused/detached)
@@ -289,8 +337,8 @@ export function useVoiceSession({
     const url  = URL.createObjectURL(blob);
     blobUrlRef.current = url;
 
-    const el = new Audio(url);
-    audioElRef.current = el;
+    const el = ensureAudioEl();   // reuse the iOS-unlocked element
+    el.src = url;
 
     speakingRef.current = true;
     setIsSpeaking(true);
@@ -309,7 +357,7 @@ export function useVoiceSession({
         if (!micDeniedRef.current) startBargeInRecorder();
       })
       .catch(() => { console.warn('play() blocked'); done(); });
-  }, [afterAudio, stopAudio]);
+  }, [afterAudio, stopAudio, ensureAudioEl]);
 
   // ── Recording with chunk-size silence detection ───────────────────────────
   const doSubmit = useCallback(() => {
@@ -582,6 +630,10 @@ export function useVoiceSession({
     setMessages([]);
     confirmedRef.current = null;
 
+    // Unlock the <audio> element within this tap so iOS Safari allows the TTS
+    // playback that arrives asynchronously later. Must run before any await.
+    primeAudioEl();
+
     // AudioContext for volume visualiser only
     const Ctx = window.AudioContext || (window as any).webkitAudioContext;
     const ctx = new Ctx() as AudioContext;
@@ -660,7 +712,7 @@ export function useVoiceSession({
 
     ws.onerror = () => { setError('Connection error'); onErrorRef.current?.('Connection error'); };
     ws.onclose = () => { if (!abortRef.current) doCleanup(); };
-  }, [setListening, setMicDeniedFn, doCleanup, handleMsg, startVolumeLoop]);
+  }, [setListening, setMicDeniedFn, doCleanup, handleMsg, startVolumeLoop, primeAudioEl]);
 
   // Keep the ws handleMsgRef current whenever handleMsg is recreated
   useEffect(() => {
